@@ -1,0 +1,54 @@
+<!-- base.html -->
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head> 
+    <meta charset="UTF-8">
+    <title>웹 공학 계산기</title> <!-- 브라우저탭에 표시될 제목 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"><!-- 글꼴 추가 -->
+    {# 
+    <link rel="stylesheet"...: 외부 CSS 파일을 연결.
+    {{ url_for('static', filename='style.css') }}는 Flask의 템플릿 문법으로 /static/style.css 파일을 찾아 연결해줘.
+    #}
+</head>
+
+<body> <!-- Body 영역(화면에 보이는 실제 내용) -->
+
+    <header> 
+        <h1>📘 웹 공학 계산기</h1> <!-- 상단 고정 제목 , h1 : 페이지 메인 타이틀 -->
+    </header>
+
+    <div class="container"> <!-- container : 전체를 좌측 + 우측 콘텐츠로 나누는 영역 -->
+
+        <nav class="sidebar"> <!-- 🔹 왼쪽 트리 메뉴 -->
+            <ul class="tree-menu"> <!-- 섹션 추가 시 여기서 추가하면 됨 -->
+
+                <li><a href="/">홈</a></li>
+                <li><a href="/section/1">Section 1 - 일반정보</a></li>
+                <li><a href="/section/2">Section 2 - 제품사양</a></li>
+                <li><a href="/section/3">Section 3 - 계측</a></li>
+                <!-- 더 많은 섹션 -->
+            </ul>
+        </nav>
+
+        {# 
+        <nav>: 탐색 메뉴를 담는 태그 (의미론적으로 메뉴라는 뜻을 부여함)
+        class="sidebar": CSS에서 왼쪽 사이드바로 꾸미기 위해 이름 지정
+        <ul> + <li>: 리스트 형식으로 메뉴 나열
+        <a href="/section/X">: 섹션 클릭 시 /section/1 같은 URL로 이동
+        #}
+
+        <main class="main-content"> <!-- 메인 콘텐츠 섹션 -->
+            {% block content %}{% endblock %}
+        </main>
+
+        {# 
+        <main>: 문서에서 메인 콘텐츠가 들어가는 공간 (헤더나 메뉴 제외한 핵심)
+        class="main-content": 스타일 적용용 클래스 이름
+        {% block content %}: Flask 템플릿에서 이 부분은 다른 페이지에서 바뀌는 영역을 의미
+        #}
+    </div>
+</body>
+</html>

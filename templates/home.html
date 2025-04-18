@@ -1,0 +1,23 @@
+<!-- home.html -->
+<!-- 홈페이지 첫 화면  -->
+
+{% extends "base.html" %} <!-- base.html의 block content 를 채우겠다는 의미 -->
+
+{# comment #} 이 줄 부터 본문 블록, base.html에 정의된 {# block content #}를 이곳에서 덮어씀 (override)  {# endcomment #}
+{% block content %}
+    <h2>📘 웹 공학 계산기에 오신 것을 환영합니다!</h2>
+    <p><!-- 일반 단락 태그 -->
+        이 웹사이트는 공정 공학, 열역학, 유체역학 등의 계산을 손쉽게 하기 위한 도구입니다.<br>
+        각 섹션을 통해 이론 학습과 계산기를 함께 경험할 수 있습니다.
+    </p>
+    <ul><!-- 순서 없는 리스트 -->
+        <li>📂 Section 1: 공학 계산의 기초 정보 제공</li>
+        <li>⚙️ Section 2: 제품 및 장비 관련 데이터</li>
+        <li>📏 Section 3: 계측 도구 계산기</li>
+    </ul>
+
+    <p style="margin-top: 20px;">
+        좌측 메뉴에서 원하는 섹션을 클릭해보세요.
+    </p>
+    
+{% endblock %}

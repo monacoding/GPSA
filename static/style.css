@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #121212, #1e1e1e);;
+    color: #e0e0e0;
+}
+/* 상단 타이틀  */
+header {
+    background-color: #181818;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+h1 {
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: #42a5f5;
+}
+
+
+/* 사이드바 */
+.sidebar {
+    width: 240px; /*사이드바 넓이 */
+    background-color: #1a1a1a; /*사이드바 배경 */
+    padding: 45px; /*사이드바 안쪽 여백 */
+    border-right: 1px solid #333; /*오른쪽 테두리선 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);/*박스 그림자 효과 */
+    border-radius: 0 8px 8px 0; /*오른쪽 모서리 둥글게 처리 */
+}
+
+.tree-menu {
+    list-style: none;      /* 리스트 앞 ● 제거 */
+    padding-left: 0;       /* 왼쪽 들여쓰기 제거 */
+    margin: 0;
+}
+
+.tree-menu li {
+    margin-bottom: 15px; /*메뉴 항목 간 간격  */
+}
+.tree-menu a {
+    color: #cccccc;
+    font-weight: 500;
+    padding: 8px 10px;
+    display: block;/*링크 전체를 박스처럼 만들어서 클릭 가능한 범위가 넓어짐  */
+    border-radius: 6px;
+}
+.tree-menu a:hover {
+    background-color: #2e2e2e;
+    color: #90caf9;
+}
+
+/* 메인 내용 */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    margin: 0px 0px 0px 0px;  /* 메인 박스 여백 */
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+.container {
+    display: flex;/* 👉 가로로 배치되게 함 */ 
+    align-items: flex-start;  /* 👉 위쪽 정렬 */
+    
+}
