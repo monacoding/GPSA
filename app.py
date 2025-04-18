@@ -1,5 +1,9 @@
-from flask import Flask, render_template
+#app.py
+from flask import Flask, render_template,request
 from dotenv import load_dotenv
+
+from calc import section0
+
 import os
 
 # .env 파일 로드
@@ -12,8 +16,20 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/section/0',methods= ['GET','POST']) #SECTION0 물성치 확인, GET :기본요청, 페이지 열때 , POST: 사용자가 폼에 입력한 데이터를 보냈을때
+def section0_route():
+    result = None #계산 결과 초기화
+    if request.method == 'POST':
+        """
+        사용자가 데이터를 입력하고 [계산하기] 같은 버튼을 누르면, 
+        HTML form이 POST 방식으로 전송됨
+        이 조건이 계산 수행 조건임 
+        """
+        result = section0.section0_calculation(request.form)    
+    return render_template('section0.html',result=result)
+
 @app.route('/section/1') #메인 페이지
-def section1():
+def section1_route():
     return render_template('section1.html')
 
 if __name__ == '__main__':
