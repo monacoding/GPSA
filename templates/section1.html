@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>📘 Section 1: 일반 정보</h2>
+<p>
+    이 섹션에서는 공학 기초 개념, 단위 환산, 공정 흐름 등에 대해 설명합니다.<br>
+    아래에는 간단한 계산 도구나 공식이 추가될 수 있습니다.
+</p>
+
+<!-- 여기에 이론 설명 -->
+<div class="section-theory">
+    <h3>📐 단위 환산 공식</h3>
+    <ul>
+        <li>1 inch = 2.54 cm</li>
+        <li>1 atm = 101325 Pa</li>
+        <li>1 kWh = 3600000 J</li>
+    </ul>
+</div>
+
+<!-- 여기에 나중에 계산기 영역 추가 -->
+<div class="section-calc">
+    <h3>🧮 계산기 영역 (예: 단위 변환기)</h3>
+    <p>추후 여기에 Flask 폼 or JS 계산기 들어갈 수 있음</p>
+</div>
+{% endblock %}

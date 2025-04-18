@@ -8,9 +8,13 @@ load_dotenv()
 # Flask 앱 생성
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/') #메인 페이지
 def home():
     return render_template('home.html')
+
+@app.route('/section/1') #메인 페이지
+def section1():
+    return render_template('section1.html')
 
 if __name__ == '__main__':
     HOST = os.getenv("FLASK_HOST")
