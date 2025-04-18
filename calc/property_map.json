@@ -1,29 +1,42 @@
 {
-    "D": "Mass density",
-    "DMOLAR": "Molar density",
-    "H": "Mass specific enthalpy",
-    "HMOLAR": "Molar specific enthalpy",
-    "S": "Mass specific entropy",
-    "SMOLAR": "Molar specific entropy",
-    "U": "Mass specific internal energy",
-    "UMOLAR": "Molar specific internal energy",
-    "C": "Specific heat (Cp, mass basis)",
-    "CPMASS": "Mass specific heat at constant pressure",
-    "CVMASS": "Mass specific heat at constant volume",
-    "V": "Viscosity",
-    "L": "Thermal conductivity",
-    "CONDUCTIVITY": "Thermal conductivity",
-    "T": "Temperature",
-    "P": "Pressure",
-    "Q": "Molar vapor quality",
-    "Z": "Compressibility factor",
-    "M": "Molar mass",
-    "ACENTRIC": "Acentric factor",
-    "SURFACE_TENSION": "Surface tension",
-    "PRANDTL": "Prandtl number",
-    "SPEED_OF_SOUND": "Speed of sound",
-    "PHASE": "Phase index (float)",
-    "G": "Mass specific Gibbs energy",
-    "ALPHA0": "Ideal Helmholtz energy",
-    "ALPHAR": "Residual Helmholtz energy"
-}
+    "D":        {"name": "Mass density", "unit": "kg/m³"},
+    "DMOLAR":   {"name": "Molar density", "unit": "mol/m³"},
+  
+    "H":        {"name": "Mass specific enthalpy", "unit": "J/kg"},
+    "HMOLAR":   {"name": "Molar specific enthalpy", "unit": "J/mol"},
+  
+    "S":        {"name": "Mass specific entropy", "unit": "J/kg·K"},
+    "SMOLAR":   {"name": "Molar specific entropy", "unit": "J/mol·K"},
+  
+    "U":        {"name": "Mass specific internal energy", "unit": "J/kg"},
+    "UMOLAR":   {"name": "Molar specific internal energy", "unit": "J/mol"},
+  
+    "C":        {"name": "Specific heat (Cp, mass basis)", "unit": "J/kg·K"},
+    "CPMASS":   {"name": "Mass specific heat at constant pressure", "unit": "J/kg·K"},
+    "CVMASS":   {"name": "Mass specific heat at constant volume", "unit": "J/kg·K"},
+  
+    "V":        {"name": "Viscosity", "unit": "Pa·s"},
+    "L":        {"name": "Thermal conductivity", "unit": "W/m·K"},
+    "CONDUCTIVITY": {"name": "Thermal conductivity", "unit": "W/m·K"},
+  
+    "T":        {"name": "Temperature", "unit": "K"},
+    "P":        {"name": "Pressure", "unit": "Pa"},
+    "Q":        {"name": "Molar vapor quality", "unit": "mol/mol"},
+  
+    "Z":        {"name": "Compressibility factor", "unit": "-"},
+    "M":        {"name": "Molar mass", "unit": "kg/mol"},
+  
+    "ACENTRIC": {"name": "Acentric factor", "unit": "-"},
+    "SURFACE_TENSION": {"name": "Surface tension", "unit": "N/m"},
+    "PRANDTL":  {"name": "Prandtl number", "unit": "-"},
+    "SPEED_OF_SOUND": {"name": "Speed of sound", "unit": "m/s"},
+    "PHASE":    {"name": "Phase index", "unit": "-"},
+  
+    "G":        {"name": "Mass specific Gibbs energy", "unit": "J/kg"},
+    "ALPHA0":   {"name": "Ideal Helmholtz energy", "unit": "J/kg"},
+    "ALPHAR":   {"name": "Residual Helmholtz energy", "unit": "J/kg"},
+  
+    "UMASS":    {"name": "Mass specific internal energy", "unit": "J/kg"},
+    "CPMOLAR":  {"name": "Molar specific heat at constant pressure", "unit": "J/mol·K"},
+    "CVMOLAR":  {"name": "Molar specific heat at constant volume", "unit": "J/mol·K"}
+  }
