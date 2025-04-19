@@ -3,13 +3,11 @@
 
 <h2>🧪 혼합물 물성치 계산기</h2>
 
-<!-- JS에서 사용할 컴포넌트 리스트 -->
 <script>
     const COMPONENTS = {{ components | tojson }};
 </script>
 
 <form method="POST" class="form-container">
-
     <fieldset>
         <legend>1. 구성 성분 + 몰분율 입력</legend>
         <div id="components-area" class="component-group">
@@ -33,7 +31,7 @@
         <div class="input-group">
             <label>온도 (°C):</label>
             <input type="number" name="T" step="any" required>
-            <label>압력 (bar):</label>
+            <label>압력 (barG):</label>
             <input type="number" name="P" step="any" required>
         </div>
     </fieldset>
@@ -44,41 +42,48 @@
 <hr>
 
 {% if result %}
-<h3>📄 계산 결과</h3>
+    <h3>📄 계산 결과</h3>
 
-{% if result.error %}
-<p style="color: red;">⚠️ 오류: {{ result.error }}</p>
-{% else %}
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>📌 Property</th>
-            <th style="text-align:right;">Value</th>
-            <th>Unit</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for name, data in result.items() %}
-        <tr>
-            <td>{{ name }}</td>
-            <td style="text-align: right;">
-                {% if data.value is string %}
-                    <span style="color: #f66;">{{ data.value }}</span>
-                {% elif data.value is defined %}
-                    {{ "{:,.5g}".format(data.value) }}
-                {% else %}
-                    -
-                {% endif %}
-            </td>
-            <td>{{ data.unit or '-' }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
+    {% if result.error %}
+        <p style="color: red;">⚠️ 오류: {{ result.error }}</p>
+    {% else %}
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>📌 Property</th>
+                    <th style="text-align:right;">Value</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, data in result.items() %}
+                    {% if name != '__phase_diagram__' %}
+                    <tr>
+                        <td>{{ name }}</td>
+                        <td style="text-align: right;">
+                            {% if data.value is string %}
+                                <span style="color: #f66;">{{ data.value }}</span>
+                            {% elif data.value is defined %}
+                                {{ "{:,.5g}".format(data.value) }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ data.unit or '-' }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if '__phase_diagram__' in result and 'image_base64' in result['__phase_diagram__'] %}
+            <h3>🌡️ Phase diagram</h3>
+            <img src="{{ result['__phase_diagram__']['image_base64'] }}" alt="Phase Diagram"
+                 style="max-width:100%; border:1px solid #ccc; margin-top:20px;">
+        {% endif %}
+    {% endif %}
 {% endif %}
 
-<!-- 🔧 컴포넌트 추가/삭제 스크립트 -->
 <script>
 function addComponent() {
     const area = document.getElementById('components-area');
