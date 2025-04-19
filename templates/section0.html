@@ -3,30 +3,31 @@
 
 <h2>🧪 혼합물 물성치 계산기</h2>
 
+<!-- JS에서 사용할 컴포넌트 리스트 -->
+<script>
+    const COMPONENTS = {{ components | tojson }};
+</script>
+
 <form method="POST" class="form-container">
 
-    <!-- 1. 구성 성분 -->
     <fieldset>
         <legend>1. 구성 성분 + 몰분율 입력</legend>
         <div id="components-area" class="component-group">
             <div class="component-row">
                 <label>Component:</label>
                 <select name="component">
-                    <option value="Methane">Methane</option>
-                    <option value="Ethane">Ethane</option>
-                    <option value="Propane">Propane</option>
-                    <option value="Butane">Butane</option>
-                    <option value="Nitrogen">Nitrogen</option>
-                    <option value="CarbonDioxide">Carbon Dioxide</option>
+                    {% for comp in components %}
+                        <option value="{{ comp }}">{{ comp }}</option>
+                    {% endfor %}
                 </select>
                 <label>Mole Fraction:</label>
                 <input type="number" name="mole_fraction" step="any" min="0" max="1" required>
+                <button type="button" class="remove-btn" onclick="removeComponent(this)">➖</button>
             </div>
         </div>
         <button type="button" onclick="addComponent()">➕ 성분 추가</button>
     </fieldset>
 
-    <!-- 2. 온도/압력 -->
     <fieldset>
         <legend>2. 온도 및 압력 입력</legend>
         <div class="input-group">
@@ -37,13 +38,11 @@
         </div>
     </fieldset>
 
-    <!-- 계산 버튼 -->
     <button type="submit" class="submit-btn">📊 계산하기</button>
 </form>
 
 <hr>
 
-<!-- 계산 결과 출력 -->
 {% if result %}
 <h3>📄 계산 결과</h3>
 
@@ -79,25 +78,32 @@
 {% endif %}
 {% endif %}
 
+<!-- 🔧 컴포넌트 추가/삭제 스크립트 -->
 <script>
 function addComponent() {
     const area = document.getElementById('components-area');
     const row = document.createElement('div');
     row.className = 'component-row';
+
+    let options = '';
+    COMPONENTS.forEach(comp => {
+        options += `<option value="${comp}">${comp}</option>`;
+    });
+
     row.innerHTML = `
         <label>Component:</label>
-        <select name="component">
-            <option value="Methane">Methane</option>
-            <option value="Ethane">Ethane</option>
-            <option value="Propane">Propane</option>
-            <option value="Butane">Butane</option>
-            <option value="Nitrogen">Nitrogen</option>
-            <option value="CarbonDioxide">Carbon Dioxide</option>
-        </select>
+        <select name="component">${options}</select>
         <label>Mole Fraction:</label>
         <input type="number" name="mole_fraction" step="any" min="0" max="1" required>
+        <button type="button" class="remove-btn" onclick="removeComponent(this)">➖</button>
     `;
+
     area.appendChild(row);
+}
+
+function removeComponent(button) {
+    const row = button.parentElement;
+    row.remove();
 }
 </script>
 
