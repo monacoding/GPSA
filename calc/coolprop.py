@@ -82,26 +82,41 @@ def _generate_phase_diagram_internal(fluid_string, T_K, P_Pa):
         T_min = max(200, T_K * 0.5)
         T_max = T_K * 1.5
         Ts = np.linspace(T_min, T_max, 500)
-        ps = CP.PropsSI('P', 'T', Ts, 'Q', 0, fluid_string)
 
+        ps = CP.PropsSI('P', 'T', Ts, 'Q', 0, fluid_string)
+        ps_barG = ps / 1e5 - 1.013
+        Ts_C = Ts - 273.15
+
+        # 👉 유효한 데이터만 남기기
+        valid = ~np.isnan(ps_barG)
+        ps_barG = ps_barG[valid]
+        Ts_C = Ts_C[valid]
+
+        if len(ps_barG) == 0 or len(Ts_C) == 0:
+            raise ValueError("유효한 상곡선 데이터가 없습니다.")
+
+        # 임계점
         try:
-            T_crit = CP.PropsSI("Tcrit", fluid_string)
-            P_crit = CP.PropsSI("Pcrit", fluid_string)
+            T_crit = CP.PropsSI("Tcrit", fluid_string) - 273.15
+            P_crit = CP.PropsSI("Pcrit", fluid_string) / 1e5 - 1.013
         except:
             T_crit, P_crit = None, None
 
+        T_C = T_K - 273.15
+        P_barG = P_Pa / 1e5 - 1.013
+
         fig, ax = plt.subplots(figsize=(6, 6))
-        ax.plot(Ts, ps, 'orange', lw=2, label='Saturation curve')
+        ax.plot(Ts_C, ps_barG, 'orange', lw=2, label='Saturation curve')
 
         if T_crit and P_crit:
             ax.axvline(T_crit, color='blue', linestyle='dashed')
             ax.axhline(P_crit, color='blue', linestyle='dashed')
 
-        ax.plot(T_K, P_Pa, 'ro', label='Your point')
-        ax.set_yscale('log')
-        ax.set_xlim(T_min, T_max)
-        ax.set_ylim(1e3, 1e8)
-        ax.set_xlabel('Temperature [C]')
+        ax.plot(T_C, P_barG, 'ro', label='Your point')
+        ax.set_yscale('linear')
+        ax.set_xlim(min(Ts_C), max(Ts_C))
+        ax.set_ylim(min(ps_barG), max(ps_barG))
+        ax.set_xlabel('Temperature [°C]')
         ax.set_ylabel('Pressure [barG]')
         ax.set_title('Phase Diagram')
         ax.legend()
@@ -113,6 +128,7 @@ def _generate_phase_diagram_internal(fluid_string, T_K, P_Pa):
         plt.close(fig)
         buf.seek(0)
         return f"data:image/png;base64,{base64.b64encode(buf.read()).decode('utf-8')}"
+
     except Exception as e:
-        print("⚠️ 상다이어그램 오류:", str(e))
+        print("⚠️ Phase diagram 오류:", str(e))
         return None

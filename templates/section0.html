@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>🧪 혼합물 물성치 계산기</h2>
+<h2>🧪 혼합물 물성치 계산기(CoolProp 기반)</h2>
 
 <script>
     const COMPONENTS = {{ components | tojson }};
@@ -26,17 +26,19 @@
         <button type="button" onclick="addComponent()">➕ 성분 추가</button>
     </fieldset>
 
-    <fieldset>
+    <fieldset> 
         <legend>2. 온도 및 압력 입력</legend>
         <div class="input-group">
             <label>온도 (°C):</label>
-            <input type="number" name="T" step="any" required>
+            <input type="number" name="T" step="any" required placeholder = "예)-163">
             <label>압력 (barG):</label>
-            <input type="number" name="P" step="any" required>
+            <input type="number" name="P" step="any" required placeholder = "예)13">
+            <button type="submit" class="submit-btn">📊 계산하기</button>
+         
         </div>
     </fieldset>
 
-    <button type="submit" class="submit-btn">📊 계산하기</button>
+    
 </form>
 
 <hr>

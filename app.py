@@ -36,8 +36,18 @@ def section0_route():
 @app.route('/section/1') #SECTION 1
 def section1_route():
     return render_template('section1.html')
-
-
+@app.route('/section/2') #SECTION 2
+def section2_route():
+    return render_template('section2.html')
+@app.route('/section/3') #SECTION 3
+def section3_route():
+    return render_template('section3.html')
+@app.route('/section/3-1')
+def section3_1():
+    return render_template("section3-1.html")
+@app.route('/section/3-2')
+def section3_2():
+    return render_template("section3-2.html")
 
 
 

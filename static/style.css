@@ -68,6 +68,48 @@ h1 {
     
 }
 
+.sidebar-item {
+    margin-bottom: 10px;
+}
+
+.dropdown-btn {
+    background-color: transparent;
+    color: #cccccc;                /* 사이드바 텍스트와 어울리게 */
+    border: none;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 15px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 6px;
+    text-decoration: none;         /* 밑줄 제거 */
+    display: block;
+    text-decoration: underline;
+}
+
+.dropdown-btn:hover {
+    background-color: #2e2e2e;     /* 호버 시 약간 밝게 */
+    color: #90caf9;                /* 포인트 색상 */
+}
+
+.dropdown-container {
+    display: none;  /* 기본은 숨김 */
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.dropdown-container a {
+    display: block;
+    padding: 5px 10px;
+    color: #ccc;
+    text-decoration: none;
+}
+
+.dropdown-container a:hover {
+    color: white;
+}
+
+
 
 /* SECTION0 */
 .form-container {
