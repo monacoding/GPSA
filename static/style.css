@@ -93,9 +93,18 @@ h1 {
 }
 
 .dropdown-container {
-    display: none;  /* 기본은 숨김 */
+    display: none;
     flex-direction: column;
     padding-left: 20px;
+}
+
+.dropdown-container.show {
+    display: block;
+}
+
+.dropdown-btn.active {
+    font-weight: bold;
+    color: #90caf9;
 }
 
 .dropdown-container a {
@@ -109,7 +118,14 @@ h1 {
     color: white;
 }
 
-
+.bottom {
+    text-align: right; 
+    background-color: #1a1a1a; /*사이드바 배경 */
+    padding: 45px; /*사이드바 안쪽 여백 */
+    border-right: 1px solid #333; /*오른쪽 테두리선 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);/*박스 그림자 효과 */
+    border-radius: 0 8px 8px 0; /*오른쪽 모서리 둥글게 처리 */
+}
 
 /* SECTION0 */
 .form-container {

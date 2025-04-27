@@ -48,8 +48,9 @@ def section3_1():
 @app.route('/section/3-2')
 def section3_2():
     return render_template("section3-2.html")
-
-
+@app.route('/section/4')
+def section4():
+    return render_template("section4.html")
 
 if __name__ == '__main__':
     HOST = os.getenv("FLASK_HOST")
