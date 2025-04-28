@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
+<head>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+
 <h2>📏 Section 3: Measurement</h2>
 <p>
     다양한 유체(기체, 액체, 증기 등)의 유량 측정 방법을 다룹니다.<br>
@@ -158,5 +165,73 @@ CH4 → C2H6 → C3H8 → i-C4 → n-C4 → i-C5 → n-C5 → C6+ → N2 → CO2
     유체의 열전도도 차이 → 전열 필라멘트 저항 변화 → 전기 신호로 변환<br>
     주로 He 또는 H<sub>2</sub> 사용
 </p>
+<hr>
 
+<h3>📐 ISO 5167 오리피스 유량 계산</h3>
+
+<h4>기본 개념</h4>
+<p>
+    ISO 5167은 차압식 유량계 (오리피스, 벤츄리, 노즐 등)를 이용해 유량을 계산하는 국제 표준입니다.<br>
+    오리피스 미터를 사용할 경우, 다음 공식을 따릅니다:
+</p>
+
+<p style="text-align: center; font-size: 1.2em;">
+    \( \dot{m} = C \, \varepsilon \, A \sqrt{ \frac{2 \Delta P \rho}{1-\beta^4} } \)
+</p>
+
+<ul>
+    <li>\( \dot{m} \) : 질량 유량 (kg/s)</li>
+    <li>\( C \) : 방출 계수 (Discharge Coefficient)</li>
+    <li>\( \varepsilon \) : 팽창 계수 (Expansibility Factor)</li>
+    <li>\( A \) : 오리피스 면적 \((A = \pi d^2/4)\)</li>
+    <li>\( \Delta P \) : 차압 (Pa)</li>
+    <li>\( \rho \) : 유체 밀도 (kg/m³)</li>
+    <li>\( \beta \) : 비율 \((\beta = d/D)\)</li>
+</ul>
+
+<h4>방출 계수 \(C\) 계산</h4>
+<p>
+    ISO 5167에서는 다음 경험식을 사용합니다:
+</p>
+
+<p style="font-size: 0.9em; padding-left: 20px;">
+\[
+C = 0.5961 + 0.0261 \beta^2 - 0.216 \beta^8 + 0.000521 \left( \frac{10^6}{Re_D} \right)^{0.7} + (0.0188 + 0.0063 A) \beta^{3.5} \left( \frac{10^6}{Re_D} \right)^{0.3} + (0.043 + 0.08 e^{-10 L_1}) (1 - 0.123 e^{-7 L_2}) (1 - 0.11 e^{-12 L_3})
+\]
+</p>
+
+<ul>
+    <li>\( A = \left( \frac{19000 \beta}{Re_D} \right)^{0.8} \)</li>
+    <li>\( L_1 = 2.2 \beta \)</li>
+    <li>\( L_2 = L_3 = 0.5 \left( \frac{10^6}{Re_D} \right) \)</li>
+</ul>
+
+<h4>팽창 계수 \( \varepsilon \) 계산</h4>
+<p>
+    가스나 증기의 경우 압축성 보정을 위해 다음 식을 사용합니다:
+</p>
+
+<p style="text-align: center; font-size: 1.1em;">
+    \( \varepsilon = 1 - (0.41 + 0.35 \beta^4)(1 - \frac{P_2}{P_1}) \)
+</p>
+
+<ul>
+    <li>\(P_1\) : 업스트림 압력</li>
+    <li>\(P_2\) : 다운스트림 압력</li>
+</ul>
+
+<h4>계산 절차 요약</h4>
+<ol>
+    <li>밀도 \( \rho \), 점도 \( \mu \) 계산</li>
+    <li>초기 오리피스 직경 \(d\) 가정</li>
+    <li>\( \beta \) 계산 (\( \beta = d/D \))</li>
+    <li>Reynolds 수 \(Re_D\) 계산</li>
+    <li>방출 계수 \(C\) 계산</li>
+    <li>예상 유량과 목표 유량 비교</li>
+    <li>Newton-Raphson 반복법으로 \(d\) 보정</li>
+</ol>
+
+<p>
+    ➡️ 이렇게 최적 오리피스 직경 \(d\)를 계산하여 정확한 유량 측정을 수행합니다.
+</p>
 {% endblock %}

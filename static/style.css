@@ -189,3 +189,27 @@ fieldset {
 .remove-btn:hover {
     background-color: #555;
 }
+
+.input-group, .component-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input-group label,
+.component-group label {
+    min-width: 110px;
+    font-weight: 500;
+}
+
+.input-group input,
+.component-group input,
+.component-group select {
+    width: 150px;
+}
+
+.submit-btn {
+    margin-top: 10px;
+}

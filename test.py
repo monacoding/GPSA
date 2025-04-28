@@ -1,13 +1,10 @@
-from calc.coolprop import generate_phase_diagram
+from calc.section3 import orifice_diameter_newton
 
-fluid = "HEOS::Water"
-T_K = 300.0
-P_Pa = 1e5
+target_m_dot = 1.5  # kg/s
+D = 0.1             # 관 지름 100 mm
+delta_p = 50000     # 차압 50 kPa
+rho = 800           # 밀도 800 kg/m3
+mu = 0.001          # 점도 0.001 Pa.s
 
-# 실행 및 HTML로 저장해서 확인
-img_base64 = generate_phase_diagram(fluid, T_K, P_Pa)
-
-with open("phase_test.html", "w") as f:
-    f.write(f'<img src="{img_base64}" alt="Diagram" style="max-width:100%;">')
-
-print("✅ HTML 파일 생성 완료: phase_test.html")
+d = orifice_diameter_newton(target_m_dot, D, delta_p, rho, mu)
+print(f"계산된 오리피스 지름: {d*1000:.2f} mm")

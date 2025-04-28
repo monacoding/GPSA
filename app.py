@@ -1,9 +1,10 @@
 #app.py
 from flask import Flask, render_template,request
 from dotenv import load_dotenv
-from calc import section0
+from calc import section0,section3
 import json
 import os
+import math
 import CoolProp.CoolProp as CP
 # .env 파일 로드
 load_dotenv()
@@ -45,9 +46,62 @@ def section3_route():
 @app.route('/section/3-1')
 def section3_1():
     return render_template("section3-1.html")
-@app.route('/section/3-2')
-def section3_2():
-    return render_template("section3-2.html")
+@app.route('/section/3-2', methods=['GET', 'POST'])
+def section3_2_route():
+    components = sorted(CP.FluidsList())
+    result = None
+    component_count = 1  # 기본 1개 성분
+
+    if request.method == 'POST':
+        try:
+            # 1. 유체 정보
+            component_list = request.form.getlist('component')
+            mole_fractions = list(map(float, request.form.getlist('mole_fraction')))
+            T = float(request.form['T'])  # °C
+            P = float(request.form['P'])  # barG
+
+            # 2. 유량 및 배관 정보
+            mass_flow_rate_kg_h = float(request.form['mass_flow_rate'])  # kg/h
+            delta_p_barG = float(request.form['delta_p'])  # barG
+            D_mm = float(request.form['pipe_diameter'])  # mm
+
+            # 변환
+            mass_flow_rate_kg_s = mass_flow_rate_kg_h / 3600  # kg/h → kg/s
+            delta_p_Pa = (delta_p_barG + 1.013) * 1e5  # barG → Pa
+            D_m = D_mm / 1000  # mm → m
+
+            # 물성치 계산
+            rho, mu = section3.get_density_viscosity(component_list, mole_fractions, T, P)
+
+            # 오리피스 직경 계산
+            d_m = section3.orifice_diameter_newton(mass_flow_rate_kg_s, D_m, delta_p_Pa, rho, mu)
+
+            beta = d_m / D_m
+            Re_D = (4 * mass_flow_rate_kg_s) / (math.pi * d_m * mu)
+            C = section3.discharge_coefficient(beta, Re_D)
+
+            result = {
+                "orifice_diameter_mm": d_m * 1000,  # m → mm
+                "beta": beta,
+                "discharge_coefficient": C,
+                "reynolds_number": Re_D,
+                "density": rho,
+                "viscosity": mu,
+            }
+
+            component_count = len(component_list)
+
+        except Exception as e:
+            result = {"error": f"계산 실패: {str(e)}"}
+            component_count = len(request.form.getlist('component'))
+
+    return render_template(
+        'section3-2.html',
+        components=components,
+        result=result,
+        component_count=component_count
+    )
+
 @app.route('/section/4')
 def section4():
     return render_template("section4.html")
