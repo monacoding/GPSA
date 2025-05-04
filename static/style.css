@@ -22,11 +22,14 @@
   }
   
   header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #181818;
-    padding: 25px;
-    text-align: center;
+    padding: 25px 40px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  }
+}
+
   
   h1 {
     font-size: 30px;
@@ -52,7 +55,100 @@
   .bottom a:hover {
     color: var(--highlight-blue);
   }
+
+  .header-right {
+    display: flex;
+    gap: 12px;
+    align-items: right;
+  }
+  .header-btn {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 14px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    align-items: right;
+  }
+
+  .header-btn:hover {
+    background-color: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+  }
+  /* ===== register.html ===== */
+  .form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+
+  .form-container h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    color: #ddd;
+    margin-bottom: 5px;
+    font-size: 0.95em;
+  }
+
+  .form-group input {
+    width: 80%;
+    padding: 10px;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  .submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+  }
+
+  .submit-btn:hover {
+    background-color: #45a049;
+  }
+  .input-with-btn {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
   
+  .check-btn {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 12px 20px;           /* ← 여기를 키움 */
+    font-size: 16px;              /* ← 글씨 크기도 키움 */
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 100px;             /* ← 기본 넓이 확보 */
+    height: 38px;                 /* ← 높이 명시적으로 설정 */
+  }
+  
+  .check-btn:hover {
+    background-color: #777;
+  }
   /* ===== 사이드바 ===== */
   .sidebar {
     width: 240px;

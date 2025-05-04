@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>회원가입</h2>
+    <form method="POST" action="{{ url_for('user.register') }}" id="register-form">
+        
+        <div class="form-group">
+            <label for="user_id">사용자 아이디</label>
+            <div class="input-with-btn">
+                <input type="text" name="user_id" id="user_id" placeholder="영문, 숫자로 구성된 최대 12글자를 입력하세요" required>
+                <button type="button" class="check-btn" onclick="checkUserId()">중복 확인</button>
+            </div>
+            <small id="user-id-msg"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="username">사용자 이름</label>
+            <input type="text" name="username" id="username" placeholder="이름 입력" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <div class="input-with-btn">
+                <input type="email" name="email" id="email" placeholder="이메일 입력" required>
+                <button type="button" class="check-btn" onclick="checkEmail()">중복 확인</button>
+            </div>
+            <small id="email-msg"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" id="password" placeholder="영문과 숫자로 구성된 최대 12자리를 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm_password">비밀번호 확인</label>
+            <input type="password" id="confirm_password" placeholder="영문과 숫자로 구성된 최대 12자리를 입력하세요" required>
+            <small id="password-msg"></small>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="submit-btn" id="submit-btn" disabled>가입하기</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let userIdValid = false;
+        let emailValid = false;
+        let pwMatch = false;
+    
+        function checkUserId() {
+            const userId = document.getElementById('user_id').value;
+            const msg = document.getElementById('user-id-msg');
+    
+            const idRegex = /^[a-zA-Z0-9]{4,12}$/;
+            if (!idRegex.test(userId)) {
+                msg.innerText = "❌ 아이디는 영어와 숫자 조합, 4~12자여야 합니다.";
+                msg.style.color = "red";
+                userIdValid = false;
+                validateForm();
+                return;
+            }
+    
+            fetch(`/user/check_userid?user_id=${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    userIdValid = !data.exists;
+                    msg.innerText = userIdValid ? "✅ 사용 가능한 아이디입니다." : "❌ 이미 사용 중인 아이디입니다.";
+                    msg.style.color = userIdValid ? "lightgreen" : "red";
+                    validateForm();
+                });
+        }
+    
+        function checkEmail() {
+            const email = document.getElementById('email').value;
+            const msg = document.getElementById('email-msg');
+    
+            fetch(`/user/check_email?email=${email}`)
+                .then(res => res.json())
+                .then(data => {
+                    emailValid = !data.exists;
+                    msg.innerText = emailValid ? "✅ 사용 가능한 이메일입니다." : "❌ 이미 등록된 이메일입니다.";
+                    msg.style.color = emailValid ? "lightgreen" : "red";
+                    validateForm();
+                });
+        }
+    
+        function validateForm() {
+            const pw = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm_password').value;
+            const pwMsg = document.getElementById('password-msg');
+            const submitBtn = document.getElementById('submit-btn');
+    
+            const pwRegex = /^[a-zA-Z0-9]{8,12}$/;
+            if (pw && confirm && pwRegex.test(pw)) {
+                pwMatch = pw === confirm;
+                pwMsg.innerText = pwMatch ? "✅ 비밀번호가 일치합니다." : "❌ 비밀번호가 일치하지 않습니다.";
+                pwMsg.style.color = pwMatch ? "lightgreen" : "red";
+            } else {
+                pwMsg.innerText = "";
+                pwMatch = false;
+            }
+    
+            submitBtn.disabled = !(userIdValid && emailValid && pwMatch);
+        }
+    
+        document.getElementById('user_id').addEventListener('blur', checkUserId);
+        document.getElementById('email').addEventListener('blur', checkEmail);
+        document.getElementById('password').addEventListener('input', validateForm);
+        document.getElementById('confirm_password').addEventListener('input', validateForm);
+    
+        const form = document.getElementById('register-form');
+        form.addEventListener('submit', function (e) {
+            const userId = document.getElementById('user_id').value;
+            const pw = document.getElementById('password').value;
+    
+            const idRegex = /^[a-zA-Z0-9]{4,12}$/;
+            const pwRegex = /^[a-zA-Z0-9]{8,12}$/;
+    
+            if (!idRegex.test(userId)) {
+                alert("❗ 사용자 아이디는 영어와 숫자로 구성된 4~12자여야 합니다.");
+                e.preventDefault();
+                return;
+            }
+            if (!pwRegex.test(pw)) {
+                alert("❗ 비밀번호는 영어와 숫자로 구성된 8~12자여야 합니다.");
+                e.preventDefault();
+                return;
+            }
+            if (!userIdValid) {
+                alert("❗ 사용자 아이디 중복 확인을 해주세요.");
+                e.preventDefault();
+                return;
+            }
+            if (!emailValid) {
+                alert("❗ 이메일 중복 확인을 해주세요.");
+                e.preventDefault();
+                return;
+            }
+            if (!pwMatch) {
+                alert("❗ 비밀번호가 일치하지 않습니다.");
+                e.preventDefault();
+            }
+        });
+    });
+    </script>
+{% endblock %}
