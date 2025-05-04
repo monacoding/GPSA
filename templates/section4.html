@@ -1,758 +1,736 @@
 {% extends "base.html" %}
 {% block content %}
-<head>
-    
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
 
-<h2>📐 Section 4: Intruments</h2>
-<p>
-    가스 시스템에서의 계측 시스템은 공기식, 유압식, 전자식 장치로 구성되며, 공정 변수(압력, 유량, 온도 등)를 측정하고 제어합니다.<br>
-    마이크로프로세서 도입 이후 계측 장비는 더욱 지능화되고 컴퓨터화되었습니다.<br>
-    본 세션에서는 가스 플랜트 계측 관련 정의와 기호를 쉽게 참고할 수 있도록 정리하며, 정확한 제어 응답을 위한 설계 가이드를 제공합니다.
-</p>
+    <div class="main-content">
+        <h2>📐 Section 4: Instruments</h2>
+        <p>
+            가스 시스템의 계측 시스템은 공기식, 유압식, 전자식 장치로 구성되며, 압력, 유량, 온도 등의 공정 변수를 측정하고 제어합니다. 마이크로프로세서 도입 이후 계측 장비는 지능화 및 컴퓨터화되었습니다. 본 세션에서는 가스 플랜트 계측 관련 정의, 기호, 설계 가이드를 정리하여 정확한 제어 응답을 지원합니다.
+        </p>
 
-<hr>
+        <hr>
 
-<h3>📋 1. 계측 관련 기호</h3>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>기호</th>
-            <th>한글 명칭</th>
-            <th>설명</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>Cv</td><td>밸브 유량 계수</td><td>유체가 밸브를 통해 흐르는 능력을 나타내는 계수</td></tr>
-        <tr><td>CO</td><td>제어기 출력</td><td>제어기에서 나오는 출력 신호</td></tr>
-        <tr><td>d</td><td>밸브 입구 직경</td><td>밸브 입구의 직경</td></tr>
-        <tr><td>D</td><td>파이프 내경</td><td>배관의 내부 직경</td></tr>
-        <tr><td>Fd</td><td>밸브 형태 보정계수</td><td>밸브의 설계 형태에 따른 수정 계수</td></tr>
-        <tr><td>FF</td><td>액체 임계 압력비 계수</td><td>액체 유동에서 임계 압력 조건의 비율</td></tr>
-        <tr><td>Fk</td><td>비열비 계수</td><td>정압비 또는 비열비로 이상기체 특성 표현</td></tr>
-        <tr><td>FL</td><td>밸브의 액체 압력 회복 계수</td><td>부속 없이 압력을 얼마나 회복하는지</td></tr>
-        <tr><td>Fp</td><td>배관 형상 계수</td><td>배관 형상에 따른 유동 특성 계수</td></tr>
-        <tr><td>FR</td><td>레이놀즈 수 계수</td><td>유동의 난류/층류 성격을 나타내는 계수</td></tr>
-        <tr><td>Gf</td><td>액체 상대 밀도</td><td>표준 조건에서 물과의 밀도 비</td></tr>
-        <tr><td>Gg</td><td>기체 상대 밀도</td><td>표준 조건에서 공기에 대한 밀도 비</td></tr>
-        <tr><td>k</td><td>비열비</td><td>이상기체에서 사용</td></tr>
-        <tr><td>K</td><td>이득 (Gain)</td><td>제어계에서의 이득</td></tr>
-        <tr><td>Kc</td><td>캐비테이션 지수</td><td>캐비테이션 발생 여부 판단 계수</td></tr>
-        <tr><td>Kd</td><td>미분 동작 이득 상수</td><td>오차 변화율에 따른 제어 출력 계수</td></tr>
-        <tr><td>Ki</td><td>적분 동작 이득 상수</td><td>오차 누적값에 따른 제어 출력 계수</td></tr>
-        <tr><td>Kn</td><td>정규화 상수</td><td>식이나 단위 보정에 사용하는 상수</td></tr>
-        <tr><td>Kp</td><td>비례 동작 이득 상수</td><td>오차에 대한 즉각적인 반응 계수</td></tr>
-        <tr><td>Ku</td><td>최종 감도</td><td>시스템이 최대로 반응할 수 있는 감도</td></tr>
-        <tr><td>M</td><td>분자량</td><td>물질의 질량을 원자 단위로 나타낸 것</td></tr>
-        <tr><td>MO</td><td>수동 모드 제어기 출력</td><td>수동 제어 모드에서의 출력값</td></tr>
-        <tr><td>N1...Nx</td><td>단위 변환용 상수</td><td>단위 환산 시 사용하는 수치 상수들</td></tr>
-        <tr><td>Pc</td><td>절대 열역학 임계 압력</td><td>기체의 절대 임계 압력</td></tr>
-        <tr><td>Pu</td><td>최종 주기</td><td>시스템의 최대 응답 주기</td></tr>
-        <tr><td>Pv</td><td>증기압</td><td>밸브 입구 온도에서의 포화 증기압</td></tr>
-        <tr><td>P1</td><td>상류 절대 정압</td><td>밸브 전방에서 측정한 절대 정압</td></tr>
-        <tr><td>P2</td><td>하류 절대 정압</td><td>밸브 후방에서 측정한 절대 정압</td></tr>
-        <tr><td>ΔP</td><td>압력차</td><td>상류와 하류 간의 압력 차이</td></tr>
-        <tr><td>PB</td><td>비례 대역 설정값</td><td>비례 제어기의 제어 대역폭</td></tr>
-        <tr><td>PBu</td><td>최종 비례 대역 설정값</td><td>제어 시스템의 최종 비례 대역 설정</td></tr>
-        <tr><td>PV</td><td>공정 변수 측정값</td><td>제어 중 측정된 현재 공정값</td></tr>
-        <tr><td>(PV–SP)</td><td>오차 신호</td><td>설정값과 측정값 사이의 차이</td></tr>
-        <tr><td>q</td><td>체적 유량</td><td>유체의 체적 흐름량</td></tr>
-        <tr><td>Qg</td><td>기체/증기 유량</td><td>기체 또는 증기의 질량/부피 유량</td></tr>
-        <tr><td>QL</td><td>액체 유량</td><td>액체의 부피 유량</td></tr>
-        <tr><td>SP</td><td>설정값</td><td>제어기의 목표 값</td></tr>
-        <tr><td>T</td><td>입구 절대 온도</td><td>가스 입구에서의 절대 온도</td></tr>
-        <tr><td>Tc</td><td>시정수</td><td>시스템 응답 시간 특성</td></tr>
-        <tr><td>Td</td><td>미분 모드 시정수</td><td>미분 제어 동작의 시간 반응</td></tr>
-        <tr><td>Ti</td><td>적분 모드 시정수</td><td>적분 제어 동작의 시간 반응</td></tr>
-        <tr><td>Tt</td><td>상류 절대 온도</td><td>상류 온도 측정값</td></tr>
-        <tr><td>w</td><td>질량 유량</td><td>단위 시간당 질량 흐름량</td></tr>
-        <tr><td>X</td><td>압력 강하 대비 입구 압력 비</td><td>입구 압력에 대한 압력 강하 비율</td></tr>
-        <tr><td>Xc</td><td>임계 유동 압력 강하 비</td><td>임계 유동 상태에서의 기준 압력 강하 비</td></tr>
-        <tr><td>Y</td><td>팽창 계수</td><td>기체의 팽창 정도를 나타내는 계수</td></tr>
-        <tr><td>Z</td><td>압축성 계수</td><td>기체의 압축성 정도</td></tr>
-        <tr><td>γ1</td><td>상류 조건에서의 비중</td><td>상류 상태에서의 유체 비중</td></tr>
-        <tr><td>ξ</td><td>감쇠 계수</td><td>제어 시스템의 진동 감쇠 특성</td></tr>
-    </tbody>
-</table>
+        <h3>📋 1. 계측 관련 기호</h3>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>기호</th>
+                    <th>한글 명칭</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Cv</td><td>밸브 유량 계수</td><td>유체가 밸브를 통해 흐르는 능력을 나타내는 계수</td></tr>
+                <tr><td>CO</td><td>제어기 출력</td><td>제어기에서 나오는 출력 신호</td></tr>
+                <tr><td>d</td><td>밸브 입구 직경</td><td>밸브 입구의 직경</td></tr>
+                <tr><td>D</td><td>파이프 내경</td><td>배관의 내부 직경</td></tr>
+                <tr><td>Fd</td><td>밸브 형태 보정계수</td><td>밸브 설계 형태에 따른 수정 계수</td></tr>
+                <tr><td>FF</td><td>액체 임계 압력비 계수</td><td>액체 유동에서 임계 압력 조건의 비율</td></tr>
+                <tr><td>Fk</td><td>비열비 계수</td><td>정압비 또는 비열비로 이상기체 특성 표현</td></tr>
+                <tr><td>FL</td><td>액체 압력 회복 계수</td><td>부속 없이 압력을 회복하는 정도</td></tr>
+                <tr><td>Fp</td><td>배관 형상 계수</td><td>배관 형상에 따른 유동 특성 계수</td></tr>
+                <tr><td>FR</td><td>레이놀즈 수 계수</td><td>유동의 난류/층류 성격을 나타내는 계수</td></tr>
+                <tr><td>Gf</td><td>액체 상대 밀도</td><td>표준 조건에서 물과의 밀도 비</td></tr>
+                <tr><td>Gg</td><td>기체 상대 밀도</td><td>표준 조건에서 공기에 대한 밀도 비</td></tr>
+                <tr><td>k</td><td>비열비</td><td>이상기체에서 사용</td></tr>
+                <tr><td>K</td><td>이득 (Gain)</td><td>제어계에서의 이득</td></tr>
+                <tr><td>Kc</td><td>캐비테이션 지수</td><td>캐비테이션 발생 여부 판단 계수</td></tr>
+                <tr><td>Kd</td><td>미분 동작 이득 상수</td><td>오차 변화율에 따른 제어 출력 계수</td></tr>
+                <tr><td>Ki</td><td>적분 동작 이득 상수</td><td>오차 누적값에 따른 제어 출력 계수</td></tr>
+                <tr><td>Kn</td><td>정규화 상수</td><td>식이나 단위 보정에 사용하는 상수</td></tr>
+                <tr><td>Kp</td><td>비례 동작 이득 상수</td><td>오차에 대한 즉각적인 반응 계수</td></tr>
+                <tr><td>Ku</td><td>최종 감도</td><td>시스템이 최대로 반응할 수 있는 감도</td></tr>
+                <tr><td>M</td><td>분자량</td><td>물질의 질량을 원자 단위로 나타낸 것</td></tr>
+                <tr><td>MO</td><td>수동 모드 제어기 출력</td><td>수동 제어 모드에서의 출력값</td></tr>
+                <tr><td>N1...Nx</td><td>단위 변환용 상수</td><td>단위 환산 시 사용하는 수치 상수들</td></tr>
+                <tr><td>Pc</td><td>절대 열역학 임계 압력</td><td>기체의 절대 임계 압력</td></tr>
+                <tr><td>Pu</td><td>최종 주기</td><td>시스템의 최대 응답 주기</td></tr>
+                <tr><td>Pv</td><td>증기압</td><td>밸브 입구 온도에서의 포화 증기압</td></tr>
+                <tr><td>P1</td><td>상류 절대 정압</td><td>밸브 전방에서 측정한 절대 정압</td></tr>
+                <tr><td>P2</td><td>하류 절대 정압</td><td>밸브 후방에서 측정한 절대 정압</td></tr>
+                <tr><td>ΔP</td><td>압력차</td><td>상류와 하류 간의 압력 차이</td></tr>
+                <tr><td>PB</td><td>비례 대역 설정값</td><td>비례 제어기의 제어 대역폭</td></tr>
+                <tr><td>PBu</td><td>최종 비례 대역 설정값</td><td>제어 시스템의 최종 비례 대역 설정</td></tr>
+                <tr><td>PV</td><td>공정 변수 측정값</td><td>제어 중 측정된 현재 공정값</td></tr>
+                <tr><td>(PV–SP)</td><td>오차 신호</td><td>설정값과 측정값 사이의 차이</td></tr>
+                <tr><td>q</td><td>체적 유량</td><td>유체의 체적 흐름량</td></tr>
+                <tr><td>Qg</td><td>기체/증기 유량</td><td>기체 또는 증기의 질량/ Seth피 유량</td></tr>
+                <tr><td>QL</td><td>액체 유량</td><td>액체의 부피 유량</td></tr>
+                <tr><td>SP</td><td>설정값</td><td>제어기의 목표 값</td></tr>
+                <tr><td>T</td><td>입구 절대 온도</td><td>가스 입구에서의 절대 온도</td></tr>
+                <tr><td>Tc</td><td>시정수</td><td>시스템 응답 시간 특성</td></tr>
+                <tr><td>Td</td><td>미분 모드 시정수</td><td>미분 제어 동작의 시간 반응</td></tr>
+                <tr><td>Ti</td><td>적분 모드 시정수</td><td>적분 제어 동작의 시간 반응</td></tr>
+                <tr><td>Tt</td><td>상류 절대 온도</td><td>상류 온도 측정값</td></tr>
+                <tr><td>w</td><td>질량 유량</td><td>단위 시간당 질량 흐름량</td></tr>
+                <tr><td>X</td><td>압력 강하 대비 입구 압력 비</td><td>입구 압력에 대한 압력 강하 비율</td></tr>
+                <tr><td>Xc</td><td>임계 유동 압력 강하 비</td><td>임계 유동 상태에서의 기준 압력 강하 비</td></tr>
+                <tr><td>Y</td><td>팽창 계수</td><td>기체의 팽창 정도를 나타내는 계수</td></tr>
+                <tr><td>Z</td><td>압축성 계수</td><td>기체의 압축성 정도</td></tr>
+                <tr><td>γ1</td><td>상류 조건에서의 비중</td><td>상류 상태에서의 유체 비중</td></tr>
+                <tr><td>ξ</td><td>감쇠 계수</td><td>제어 시스템의 진동 감쇠 특성</td></tr>
+            </tbody>
+        </table>
 
-<hr>
+        <hr>
 
-<h3>🛠️ 2. 계측 용어</h3>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>용어</th>
-            <th>한글 명칭</th>
-            <th>설명</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>A/D</td><td>아날로그-디지털 변환기</td><td>아날로그 신호를 디지털 신호로 변환</td></tr>
-        <tr><td>Actuator</td><td>액추에이터</td><td>제어 출력을 받아 최종 제어 요소를 움직이는 장치</td></tr>
-        <tr><td>Adaptive control</td><td>적응 제어</td><td>공정 조건에 따라 제어기 튜닝이 자동 조정</td></tr>
-        <tr><td>Algorithm</td><td>알고리즘</td><td>제어기에서 수행되는 수학적 제어 동작</td></tr>
-        <tr><td>Alphanumeric</td><td>영숫자</td><td>문자, 숫자, 기호를 포함하는 문자 집합</td></tr>
-        <tr><td>Analog computer</td><td>아날로그 컴퓨터</td><td>연속 신호로 계산 및 제어 수행</td></tr>
-        <tr><td>Attenuation</td><td>감쇠</td><td>신호 크기의 증가 또는 감소</td></tr>
-        <tr><td>Baud rate</td><td>보율</td><td>초당 전송되는 비트 수</td></tr>
-        <tr><td>Bit</td><td>비트</td><td>이진 숫자의 단일 단위(0 또는 1)</td></tr>
-        <tr><td>Byte</td><td>바이트</td><td>비트가 모인 이진 숫자 묶음</td></tr>
-        <tr><td>Cascade control</td><td>캐스케이드 제어</td><td>하나의 제어기 출력이 다른 제어기의 설정값 조정</td></tr>
-        <tr><td>Control action, derivative</td><td>미분 제어 동작</td><td>입력 변화율에 비례한 출력</td></tr>
-        <tr><td>Control action, integral</td><td>적분 제어 동작</td><td>오차 신호의 시간 적분값에 비례한 출력</td></tr>
-        <tr><td>Control action, proportional</td><td>비례 제어 동작</td><td>오차 신호에 선형적으로 비례한 출력</td></tr>
-        <tr><td>Controller</td><td>제어기</td><td>측정값과 설정값 비교해 오차를 줄이는 장치</td></tr>
-        <tr><td>Data base</td><td>데이터베이스</td><td>제어 시스템이 참조하는 변수, 설정값 등의 집합</td></tr>
-        <tr><td>Data highway</td><td>데이터 고속통신로</td><td>분산 제어 시스템 구성 요소 연결 경로</td></tr>
-        <tr><td>DDC</td><td>직접 디지털 제어</td><td>디지털 컴퓨터가 최종 제어 요소를 제어</td></tr>
-        <tr><td>Dead band</td><td>데드 밴드</td><td>입력 변화가 출력에 영향을 주지 않는 범위</td></tr>
-        <tr><td>Dead time</td><td>지연 시간</td><td>자극과 반응 간의 시간 차</td></tr>
-        <tr><td>Dedicated control</td><td>전용 제어</td><td>하나의 제어기가 하나의 변수만 제어</td></tr>
-        <tr><td>Derivative control</td><td>미분 제어</td><td>변화율 감지로 목표값 초과 전 반응</td></tr>
-        <tr><td>Derivative time</td><td>미분 시간</td><td>PD 제어기 출력이 입력보다 앞서는 시간</td></tr>
-        <tr><td>Digital computer</td><td>디지털 컴퓨터</td><td>불연속 데이터 처리 및 저장</td></tr>
-        <tr><td>Distributed control system</td><td>분산 제어 시스템</td><td>개별 요소 고장 시 관련 루프에만 영향</td></tr>
-        <tr><td>EPROM</td><td>지우기 가능한 프로그램 저장 메모리</td><td>비휘발성 메모리, 특수 장비로 수정 가능</td></tr>
-        <tr><td>Error signal</td><td>오차 신호</td><td>설정값과 측정값 차이에서 발생</td></tr>
-        <tr><td>Feedback control</td><td>피드백 제어</td><td>측정 결과를 기준으로 오차 줄임</td></tr>
-        <tr><td>Feedforward control</td><td>피드포워드 제어</td><td>공정 변수 영향 전 미리 보정</td></tr>
-        <tr><td>Final control element</td><td>최종 제어 요소</td><td>조절 변수를 직접 변화시키는 구성 요소</td></tr>
-        <tr><td>Gain</td><td>이득</td><td>출력 변화량과 입력 변화량의 비율</td></tr>
-        <tr><td>Hierarchy</td><td>계층 구조</td><td>제어 시스템 요소의 우선순위 또는 영향력</td></tr>
-        <tr><td>Hysteresis</td><td>히스테리시스</td><td>같은 입력에서 상향/하향 응답 차이</td></tr>
-        <tr><td>Integral (reset) control</td><td>적분 제어</td><td>비례 제어의 오프셋 제거</td></tr>
-        <tr><td>Integral (reset) time</td><td>적분 시간</td><td>오차에 따른 제어기 출력 변화 시간</td></tr>
-        <tr><td>Integral windup</td><td>적분 포화</td><td>오차 신호 오래 존재 시 출력 최대치 고정</td></tr>
-        <tr><td>Intrinsically safe</td><td>본질 안전</td><td>점화 위험 없는 제한된 에너지 사용</td></tr>
-        <tr><td>I/P transducer</td><td>전류-공기 변환기</td><td>전기 신호를 공기압 신호로 변환</td></tr>
-        <tr><td>I/O devices</td><td>입출력 장치</td><td>데이터 입력 및 출력 담당</td></tr>
-        <tr><td>Noise</td><td>노이즈</td><td>원치 않는 신호 성분 또는 외란</td></tr>
-        <tr><td>Offset</td><td>오프셋</td><td>설정값과 실제값 간 지속적인 오차</td></tr>
-        <tr><td>P controller</td><td>비례 제어기</td><td>오차에 비례하여 출력 조정</td></tr>
-        <tr><td>Parallel data</td><td>병렬 데이터</td><td>모든 비트를 동시에 전송</td></tr>
-        <tr><td>PD controller</td><td>PD 제어기</td><td>비례 + 미분 제어 동작</td></tr>
-        <tr><td>PI controller</td><td>PI 제어기</td><td>비례 + 적분 제어 동작</td></tr>
-        <tr><td>PID controller</td><td>PID 제어기</td><td>비례 + 적분 + 미분 제어 동작</td></tr>
-        <tr><td>PROM</td><td>프로그래머블 ROM</td><td>제조 후 기록 가능, 컴퓨터 수정 불가</td></tr>
-        <tr><td>Proportional band</td><td>비례 대역</td><td>출력 전체 범위 변화를 유도하는 오차 변화량</td></tr>
-        <tr><td>Proportional control</td><td>비례 제어</td><td>오차에 선형적으로 비례하여 출력 변화</td></tr>
-        <tr><td>RAM</td><td>램</td><td>휘발성 메모리, 전원 끄면 내용 사라짐</td></tr>
-        <tr><td>Ramp</td><td>램프</td><td>일정 속도로 변수 값 증가/감소</td></tr>
-        <tr><td>Reset rate</td><td>리셋 비율</td><td>적분 시간 역수, 분당 반복 횟수</td></tr>
-        <tr><td>ROM</td><td>롬</td><td>제조 시 기록된 정보 수정 불가</td></tr>
-        <tr><td>Serial communications</td><td>직렬 통신</td><td>정보를 순차적으로 한 회선으로 전송</td></tr>
-        <tr><td>Setpoint</td><td>설정값</td><td>제어 대상 변수의 목표값</td></tr>
-        <tr><td>Software</td><td>소프트웨어</td><td>컴퓨터 하드웨어 동작 프로그램</td></tr>
-        <tr><td>Split-ranging</td><td>스플릿 레인지 제어</td><td>하나의 출력이 둘 이상 제어 요소 제어</td></tr>
-        <tr><td>Steady-state</td><td>정상 상태</td><td>변수들이 일정해진 상태</td></tr>
-        <tr><td>Supervisory control</td><td>상위 제어</td><td>컴퓨터가 설정값 전달, 하위 제어기 수행</td></tr>
-        <tr><td>System control diagram</td><td>시스템 제어도</td><td>전체 운전 및 제어 철학 정의 다이어그램</td></tr>
-        <tr><td>Telemetry</td><td>원격 측정</td><td>측정값을 먼 거리로 전송 및 해석</td></tr>
-    </tbody>
-</table>
+        <h3>🛠️ 2. 계측 용어</h3>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>용어</th>
+                    <th>한글 명칭</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>A/D</td><td>아날로그-디지털 변환기</td><td>아날로그 신호를 디지털 신호로 변환</td></tr>
+                <tr><td>Actuator</td><td>액추에이터</td><td>제어 출력을 받아 최종 제어 요소를 움직이는 장치</td></tr>
+                <tr><td>Adaptive control</td><td>적응 제어</td><td>공정 조건에 따라 제어기 튜닝 자동 조정</td></tr>
+                <tr><td>Algorithm</td><td>알고리즘</td><td>제어기에서 수행되는 수학적 제어 동작</td></tr>
+                <tr><td>Alphanumeric</td><td>영숫자</td><td>문자, 숫자, 기호를 포함하는 문자 집합</td></tr>
+                <tr><td>Analog computer</td><td>아날로그 컴퓨터</td><td>연속 신호로 계산 및 제어 수행</td></tr>
+                <tr><td>Attenuation</td><td>감쇠</td><td>신호 크기의 증가 또는 감소</td></tr>
+                <tr><td>Baud rate</td><td>보율</td><td>초당 전송되는 비트 수</td></tr>
+                <tr><td>Bit</td><td>비트</td><td>이진 숫자의 단일 단위(0 또는 1)</td></tr>
+                <tr><td>Byte</td><td>바이트</td><td>비트가 모인 이진 숫자 묶음</td></tr>
+                <tr><td>Cascade control</td><td>캐스케이드 제어</td><td>하나의 제어기 출력이 다른 제어기의 설정값 조정</td></tr>
+                <tr><td>Control action, derivative</td><td>미분 제어 동작</td><td>입력 변화율에 비례한 출력</td></tr>
+                <tr><td>Control action, integral</td><td>적분 제어 동작</td><td>오차 신호의 시간 적분값에 비례한 출력</td></tr>
+                <tr><td>Control action, proportional</td><td>비례 제어 동작</td><td>오차 신호에 선형적으로 비례한 출력</td></tr>
+                <tr><td>Controller</td><td>제어기</td><td>측정값과 설정값 비교해 오차를 줄이는 장치</td></tr>
+                <tr><td>Data base</td><td>데이터베이스</td><td>제어 시스템이 참조하는 변수, 설정값 등의 집합</td></tr>
+                <tr><td>Data highway</td><td>데이터 고속통신로</td><td>분산 제어 시스템 구성 요소 연결 경로</td></tr>
+                <tr><td>DDC</td><td>직접 디지털 제어</td><td>디지털 컴퓨터가 최종 제어 요소를 제어</td></tr>
+                <tr><td>Dead band</td><td>데드 밴드</td><td>입력 변화가 출력에 영향을 주지 않는 범위</td></tr>
+                <tr><td>Dead time</td><td>지연 시간</td><td>자극과 반응 간의 시간 차</td></tr>
+                <tr><td>Dedicated control</td><td>전용 제어</td><td>하나의 제어기가 하나의 변수만 제어</td></tr>
+                <tr><td>Derivative control</td><td>미분 제어</td><td>변화율 감지로 목표값 초과 전 반응</td></tr>
+                <tr><td>Derivative time</td><td>미분 시간</td><td>PD 제어기 출력이 입력보다 앞서는 시간</td></tr>
+                <tr><td>Digital computer</td><td>디지털 컴퓨터</td><td>불연속 데이터 처리 및 저장</td></tr>
+                <tr><td>Distributed control system</td><td>분산 제어 시스템</td><td>개별 요소 고장 시 관련 루프에만 영향</td></tr>
+                <tr><td>EPROM</td><td>지우기 가능한 프로그램 저장 메모리</td><td>비휘발성 메모리, 특수 장비로 수정 가능</td></tr>
+                <tr><td>Error signal</td><td>오차 신호</td><td>설정값과 측정값 차이에서 발생</td></tr>
+                <tr><td>Feedback control</td><td>피드백 제어</td><td>측정 결과를 기준으로 오차 줄임</td></tr>
+                <tr><td>Feedforward control</td><td>피드포워드 제어</td><td>공정 변수 영향 전 미리 보정</td></tr>
+                <tr><td>Final control element</td><td>최종 제어 요소</td><td>조절 변수를 직접 변화시키는 구성 요소</td></tr>
+                <tr><td>Gain</td><td>이득</td><td>출력 변화량과 입력 변화량의 비율</td></tr>
+                <tr><td>Hierarchy</td><td>계층 구조</td><td>제어 시스템 요소의 우선순위 또는 영향력</td></tr>
+                <tr><td>Hysteresis</td><td>히스테리시스</td><td>같은 입력에서 상향/하향 응답 차이</td></tr>
+                <tr><td>Integral (reset) control</td><td>적분 제어</td><td>비례 제어의 오프셋 제거</td></tr>
+                <tr><td>Integral (reset) time</td><td>적분 시간</td><td>오차에 따른 제어기 출력 변화 시간</td></tr>
+                <tr><td>Integral windup</td><td>적분 포화</td><td>오차 신호 오래 존재 시 출력 최대치 고정</td></tr>
+                <tr><td>Intrinsically safe</td><td>본질 안전</td><td>점화 위험 없는 제한된 에너지 사용</td></tr>
+                <tr><td>I/P transducer</td><td>전류-공기 변환기</td><td>전기 신호를 공기압 신호로 변환</td></tr>
+                <tr><td>I/O devices</td><td>입출력 장치</td><td>데이터 입력 및 출력 담당</td></tr>
+                <tr><td>Noise</td><td>노이즈</td><td>원치 않는 신호 성분 또는 외란</td></tr>
+                <tr><td>Offset</td><td>오프셋</td><td>설정값과 실제값 간 지속적인 오차</td></tr>
+                <tr><td>P controller</td><td>비례 제어기</td><td>오차에 비례하여 출력 조정</td></tr>
+                <tr><td>Parallel data</td><td>병렬 데이터</td><td>모든 비트를 동시에 전송</td></tr>
+                <tr><td>PD controller</td><td>PD 제어기</td><td>비례 + 미분 제어 동작</td></tr>
+                <tr><td>PI controller</td><td>PI 제어기</td><td>비례 + 적분 제어 동작</td></tr>
+                <tr><td>PID controller</td><td>PID 제어기</td><td>비례 + 적분 + 미분 제어 동작</td></tr>
+                <tr><td>PROM</td><td>프로그래머블 ROM</td><td>제조 후 기록 가능, 컴퓨터 수정 불가</td></tr>
+                <tr><td>Proportional band</td><td>비례 대역</td><td>출력 전체 범위 변화를 유도하는 오차 변화량</td></tr>
+                <tr><td>Proportional control</td><td>비례 제어</td><td>오차에 선형적으로 비례하여 출력 변화</td></tr>
+                <tr><td>RAM</td><td>램</td><td>휘발성 메모리, 전원 끄면 내용 사라짐</td></tr>
+                <tr><td>Ramp</td><td>램프</td><td>일정 속도로 변수 값 증가/감소</td></tr>
+                <tr><td>Reset rate</td><td>리셋 비율</td><td>적분 시간 역수, 분당 반복 횟수</td></tr>
+                <tr><td>ROM</td><td>롬</td><td>제조 시 기록된 정보 수정 불가</td></tr>
+                <tr><td>Serial communications</td><td>직렬 통신</td><td>정보를 순차적으로 한 회선으로 전송</td></tr>
+                <tr><td>Setpoint</td><td>설정값</td><td>제어 대상 변수의 목표값</td></tr>
+                <tr><td>Software</td><td>소프트웨어</td><td>컴퓨터 하드웨어 동작 프로그램</td></tr>
+                <tr><td>Split-ranging</td><td>스플릿 레인지 제어</td><td>하나의 출력이 둘 이상 제어 요소 제어</td></tr>
+                <tr><td>Steady-state</td><td>정상 상태</td><td>변수들이 일정해진 상태</td></tr>
+                <tr><td>Supervisory control</td><td>상위 제어</td><td>컴퓨터가 설정값 전달, 하위 제어기 수행</td></tr>
+                <tr><td>System control diagram</td><td>시스템 제어도</td><td>전체 운전 및 제어 철학 정의 다이어그램</td></tr>
+                <tr><td>Telemetry</td><td>원격 측정</td><td>측정값을 먼 거리로 전송 및 해석</td></tr>
+            </tbody>
+        </table>
 
-<hr>
+        <hr>
 
-<h3>⚙️ 3. 계측 방식 선택</h3>
-<p>계측기 종류는 시스템 호환성에 따라 사전에 결정되는 경우가 많으며, 주로 공압식과 전자식 중 선택합니다.</p>
+        <h3>⚙️ 3. 계측 방식 선택</h3>
+        <p>계측기는 시스템 호환성에 따라 공압식 또는 전자식으로 선택됩니다.</p>
 
-<h4>3-1. 공압식 (Pneumatic)</h4>
-<ul>
-    <li>시스템 용량: 모든 공기 소비 장비 요구량 합계 + 여유분(margin)</li>
-    <li>공기 저장 탱크: 최소 5분 이상 공기 공급 유지</li>
-    
-</ul>
-
-<h4>3-2. 전자식 (Electronic)</h4>
-<ul>
-    <li>전기 규정: NEC/NFPA 70, Article 500 & 725 준수</li>
-    <li>설비 보호: 낙뢰/서지 대비 필요</li>
-    <li>전원 3요소: 조절력, 리플, 단락 보호 필수</li>
-    <li>UPS: 재폐로 시간 이상 유지 + 안전한 셧다운 확보</li>
-    <li>유지보수: 배터리 점검, 과충전/방전 보호 회로 구성</li>
-</ul>
-
-<h4>비교</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>항목</th>
-            <th>공압식</th>
-            <th>전자식</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>장점 ✅</td>
-            <td>
-                - 본질적으로 안전, 전기 회로 없음<br>
-                - 밸브와 호환성 우수<br>
-                - 단시간 정전 시 에어 저장 용기로 작동 유지
-            </td>
-            <td>
-                - 비용 대비 정확도 우수<br>
-                - 컴퓨터 및 정보 공유에 적합<br>
-                - 신호 전달 속도 빠름<br>
-                - 전류 루프와 AC 전류 분리 시 신호 무결성 유지
-            </td>
-        </tr>
-        <tr>
-            <td>단점 ❌</td>
-            <td>
-                - 공기 시스템 오염 취약<br>
-                - 공기 누출 우려<br>
-                - 먼지, 모래, 물 등으로 기계 부품 고장 가능<br>
-                - 90m 이상에서 신호 증폭기 필요<br>
-                - 수분 존재 시 결빙 가능<br>
-                - 제어 속도 음속 제한
-            </td>
-            <td>
-                - 위험 지역에서 에어 퍼지, 방폭 설계 또는 본질 안전 설계 필요<br>
-                - 전기 간섭 취약<br>
-                - 완전한 Fail-Safe 구현 어려움
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<hr>
-
-<h3>📏 4. 압력 센서</h3>
-<h4>4-1. 마노미터 (Manometer)</h4>
-<ul>
-    <li><strong>원리:</strong> 액체 높이 차로 압력 차 측정 (물 또는 수은 사용)</li>
-    <li><strong>특징:</strong> 저압 측정, 정밀 필요 시, 단순 구조</li>
-    
-</ul>
-<img src="{{ url_for('static', filename='images/section4/manometer.png') }}" alt="마노미터" width="900">
-<h4>4-2. 부르동 튜브 (Bourdon Tube)</h4>
-<ul>
-    <li><strong>원리:</strong> 금속 튜브가 압력 받아 펴지는 힘 이용</li>
-    <li><strong>특징:</strong> 산업용 게이지, 고압 측정, 내구성 좋음</li>
-    
-</ul>
-<img src="{{ url_for('static', filename='images/section4/bourdontubes.png') }}" alt="부르동튜브" width="900">
-<h4>4-3. 벨로우즈 (Bellows)</h4>
-<ul>
-    <li><strong>원리:</strong> 주름진 튜브가 압력에 따라 늘어남</li>
-    <li><strong>특징:</strong> 정밀 계기, 낮은 압력 범위, 작은 변위 감지</li>
-   
-</ul>
-<img src="{{ url_for('static', filename='images/section4/bellows.png') }}" alt="부르동튜브" width="900">
-<h4>4-4. 다이어프램 (Diaphragm)</h4>
-<ul>
-    <li><strong>원리:</strong> 얇은 막이 압력 받으며 변형</li>
-    <li><strong>특징:</strong> 소형화 가능, 위생적 환경에 적합</li>
-   
-</ul>
-<img src="{{ url_for('static', filename='images/section4/diaphragm.png') }}" alt="부르동튜브" width="900">
-<h4>압력 스위치 작동 메커니즘</h4>
-<ul>
-    <li><strong>센싱 요소:</strong> 벨로우즈 또는 다이어프램 사용, 압력에 따라 기계적 변형</li>
-    <li><strong>스프링 로딩:</strong> 설정 압력에 도달 시 스프링 장력 극복, 스위치 작동</li>
-    <li><strong>스위칭 구조 (SPDT):</strong>
+        <h4>3-1. 공압식 (Pneumatic)</h4>
         <ul>
-            <li>압력 상승: 1-4번 접점 연결</li>
-            <li>압력 하강: 1-2번 접점 연결</li>
-            <li>공통점: 1번 접점</li>
+            <li><strong>시스템 용량:</strong> 모든 공기 소비 장비 요구량 합계 + 여유분</li>
+            <li><strong>공기 저장 탱크:</strong> 최소 5분 이상 공기 공급 유지</li>
         </ul>
-    </li>
-</ul>
 
-<hr>
-
-<h3>📏 5. 레벨 센서</h3>
-<h4>5-1. 게이지 글라스</h4>
-<ul>
-    <li><strong>특징:</strong> 시각적 레벨 측정 장치</li>
-    <li><strong>종류:</strong>
+        <h4>3-2. 전자식 (Electronic)</h4>
         <ul>
-            <li>투명형: 불투명 유체 레벨 확인</li>
-            <li>반사형: 투명 유체를 반사 프리즘으로 확인</li>
+            <li><strong>전기 규정:</strong> NEC/NFPA 70, Article 500 & 725 준수</li>
+            <li><strong>설비 보호:</strong> 낙뢰/서지 대비</li>
+            <li><strong>전원 3요소:</strong> 조절력, 리플, 단락 보호 필수</li>
+            <li><strong>UPS:</strong> 재폐로 시간 이상 유지 + 안전한 셧다운</li>
+            <li><strong>유지보수:</strong> 배터리 점검, 과충전/방전 보호 회로</li>
         </ul>
-    </li>
-    
-</ul>
-<img src="{{ url_for('static', filename='images/section4/flat gauge.png') }}" alt="부르동튜브" width="900">
-<h4>5-2. 체인 및 테이프 플로트 게이지</h4>
-<ul>
-    <li><strong>용도:</strong> 대형 비가압 저장 탱크</li>
-    <li><strong>특징:</strong> 탱크 전체 높이 측정</li>
-    
-</ul>
-<img src="{{ url_for('static', filename='images/section4/chain and tape float gauge.png') }}" alt="부르동튜브" width="900">
 
-<h4>5-3. 레버 및 샤프트 플로트 게이지</h4>
-<ul>
-    <li><strong>원리:</strong> 플로트가 액면 따라 이동, 레버로 전달</li>
-</ul>
-<img src="{{ url_for('static', filename='images/section4/level and shaft float gauge.png') }}" alt="부르동튜브" width="900">
-<h4>5-4. 디스플레이서 레벨 타입</h4>
-<ul>
-    <li><strong>원리:</strong> 토크 튜브로 회전력 발생</li>
-    <li><strong>특징:</strong> 밀도 변화 영향 적음, 트랜스미터/인디케이터 연동 가능</li>
-</ul>
-<img src="{{ url_for('static', filename='images/section4/displacer level measuring device.png') }}" alt="부르동튜브" width="900">
-<h4>5-5. 헤드 압력 타입</h4>
-<ul>
-    <li><strong>원리:</strong> 유체 정수압 측정</li>
-    <li><strong>특징:</strong> 액체 밀도에 따라 측정값 변동</li>
-</ul>
-<img src="{{ url_for('static', filename='images/section4/head pressure level gauge.png') }}" alt="부르동튜브" width="900">
-<h4>5-6. 정전 용량식 센서 (Capacitance Probe)</h4>
-<ul>
-    <li><strong>원리:</strong> 액체 유전율 변화로 정전 용량 증가</li>
-    <li><strong>구성:</strong> 탱크 내부 전극 또는 보호 튜브 내 전극</li>
-</ul>
+        <h4>비교</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>항목</th>
+                    <th>공압식</th>
+                    <th>전자식</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>장점 ✅</td>
+                    <td>
+                        - 본질 안전, 전기 회로 없음<br>
+                        - 밸브 호환성 우수<br>
+                        - 단시간 정전 시 에어 저장 용기로 작동 유지
+                    </td>
+                    <td>
+                        - 비용 대비 정확도 우수<br>
+                        - 컴퓨터 및 정보 공유 적합<br>
+                        - 신호 전달 속도 빠름<br>
+                        - 전류 루프와 AC 전류 분리 시 신호 무결성 유지
+                    </td>
+                </tr>
+                <tr>
+                    <td>단점 ❌</td>
+                    <td>
+                        - 공기 시스템 오염 취약<br>
+                        - 공기 누출 우려<br>
+                        - 먼지, 모래, 물로 기계 부품 고장 가능<br>
+                        - 90m 이상에서 신호 증폭기 필요<br>
+                        - 수분 존재 시 결빙 가능<br>
+                        - 제어 속도 음속 제한
+                    </td>
+                    <td>
+                        - 위험 지역에서 에어 퍼지, 방폭 설계 필요<br>
+                        - 전기 간섭 취약<br>
+                        - 완전한 Fail-Safe 구현 어려움
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-<h4>5-7. 유도파 레이더 (Guided Wave Radar, GWR)</h4>
-<ul>
-    <li><strong>원리:</strong> 마이크로파 펄스 전송, 펄스 이동 시간으로 레벨 측정</li>
-    <li><strong>구성:</strong>
+        <hr>
+
+        <h3>📏 4. 압력 센서</h3>
+        <h4>4-1. 마노미터 (Manometer)</h4>
         <ul>
-            <li>마이크로파 펄스 생성 트랜스미터</li>
-            <li>펄스 가이드 스틸 프로브</li>
+            <li><strong>원리:</strong> 액체 높이 차로 압력 차 측정 (물/수은)</li>
+            <li><strong>특징:</strong> 저압 측정, 정밀, 단순 구조</li>
         </ul>
-    </li>
-</ul>
+        <img src="{{ url_for('static', filename='images/section4/manometer.png') }}" alt="마노미터" width="800">
 
-<hr>
-
-<h3>🌡️ 6. 온도 센서</h3>
-<h4>6-1. 열전대 (Thermocouples)</h4>
-<ul>
-    <li><strong>원리:</strong> 서로 다른 두 금속 접속으로 온도 차이에 따른 기전력 발생</li>
-    <li><strong>종류:</strong> K타입, J타입, T타입, E타입, N타입 등</li>
-    <li><strong>장점:</strong>
+        <h4>4-2. 부르동 튜브 (Bourdon Tube)</h4>
         <ul>
-            <li>간편한 측정 시스템</li>
-            <li>저렴한 비용</li>
-            <li>폭넓은 온도 측정 범위</li>
+            <li><strong>원리:</strong> 금속 튜브가 압력 받아 펴지는 힘 이용</li>
+            <li><strong>특징:</strong> 산업용, 고압 측정, 내구성 우수</li>
         </ul>
-    </li>
-    <li><strong>단점:</strong>
+        <img src="{{ url_for('static', filename='images/section4/bourdontubes.png') }}" alt="부르동튜브" width="800">
+
+        <h4>4-3. 벨로우즈 (Bellows)</h4>
         <ul>
-            <li>정확도 낮음</li>
-            <li>측정 환경에 맞는 열전대 선택 필요</li>
+            <li><strong>원리:</strong> 주름진 튜브가 압력에 따라 늘어남</li>
+            <li><strong>특징:</strong> 정밀 계기, 저압, 작은 변위 감지</li>
         </ul>
-    </li>
-    <li><strong>응용:</strong> 산업 현장, 실험실, 의료 장비</li>
-</ul>
+        <img src="{{ url_for('static', filename='images/section4/bellows.png') }}" alt="벨로우즈" width="800">
 
-<h4>6-2. 저항 온도계 (RTD)</h4>
-<ul>
-    <li><strong>원리:</strong> 금속의 전기 저항이 온도에 따라 변화</li>
-    <li><strong>적합 금속:</strong> 백금, 구리, 니켈 (저항-온도 관계 선형)</li>
-    <li><strong>특징:</strong> 열전대보다 빠른 응답, 높은 정확도</li>
-</ul>
-
-<h4>6-3. 충전식 온도계 (Filled System Thermometer)</h4>
-<ul>
-    <li><strong>구성:</strong> 벌브, 모세관, 측정 요소</li>
-    <li><strong>원리:</strong> 온도 변화로 액체/기체의 부피 또는 압력 변화 감지</li>
-</ul>
-
-<hr>
-
-<h3>📈 7. 유량계</h3>
-<h4>7-1. 가변 헤드 유량계 (Variable Head Flow Meter)</h4>
-<ul>
-    <li><strong>원리:</strong> 유체가 유량 요소 통과 시 발생하는 압력 차이 측정</li>
-    <li><strong>주요 유량 요소:</strong>
+        <h4>4-4. 다이어프램 (Diaphragm)</h4>
         <ul>
-            <li>오리피스 플레이트: 유체 흐름 제한으로 압력 차이 생성</li>
-            <li>유량 노즐, 벤추리 튜브, 피토 튜브, 평균 피토 튜브</li>
+            <li><strong>원리:</strong> 얇은 막이 압력 받으며 변형</li>
+            <li><strong>특징:</strong> 소형화 가능, 위생적 환경 적합</li>
         </ul>
-    </li>
-</ul>
+        <img src="{{ url_for('static', filename='images/section4/diaphragm.png') }}" alt="다이어프램" width="800">
 
-<h4>7-2. 가변 면적 유량계 (Variable Area Flow Meter)</h4>
-<ul>
-    <li><strong>원리:</strong> 로터미터, 유체 흐름에 따라 플로트가 튜브 내 상하 이동</li>
-</ul>
-
-<hr>
-
-<h3>🔌 8. 신호 변환기 (Signal Converter)</h3>
-<ul>
-    <li><strong>P/I:</strong> 공압 신호를 전자 신호(4-20mA)로 변환</li>
-    <li><strong>I/P:</strong> 전자 신호를 공압 신호로 변환, 노즐-배플 구조 사용</li>
-    <li><strong>절연기 (Isolator):</strong> 접지 루프 전류/공통 모드 전압 제거</li>
-    <li><strong>전기 신호 변환기:</strong> 신호 범위 변환 (예: 4-20mA → 0-10Vdc)</li>
-    <li><strong>주파수 변환기:</strong> 유량계 펄스를 비례 전압 출력으로 변환</li>
-</ul>
-
-<hr>
-
-<h3>📊 9. 레코더 및 지시기</h3>
-<h4>9-1. 레코더 (Recorder)</h4>
-<ul>
-    <li><strong>기능:</strong> 측정 변수를 시간 또는 다른 변수와의 관계로 그래프 기록</li>
-</ul>
-
-<h4>9-2. 지시기 (Indicator)</h4>
-<ul>
-    <li><strong>기능:</strong> 온도, 압력, 유량 등 측정값 시각적 표시 (TI, PI, FI 등)</li>
-    <li><strong>종류:</strong>
+        <h4>압력 스위치 작동 메커니즘</h4>
         <ul>
-            <li>기계식: 눈금판 바늘 움직임 (다이어프램, 벨로우즈 등)</li>
-            <li>전자식 아날로그: 광학 디스플레이 작동</li>
-            <li>디지털: LED, LCD, 가스 충전 튜브 사용</li>
-        </ul>
-    </li>
-</ul>
-
-<hr>
-
-<h3>🔄 10. 제어 루프 (Control Loop)</h3>
-<h4>10-1. 개방 루프 (Open Loop)</h4>
-<ul>
-    <li><strong>특징:</strong> 수동 조작, 피드백 없음, 외란 발생 시 제어 불가</li>
-    <li><strong>예시:</strong> 작업자가 밸브 수동 조작으로 온도 제어</li>
-</ul>
-<img src="{{ url_for('static', filename='images/section4/openloop.png') }}" alt="컨트롤컨셉" width="900">
-<h4>10-2. 폐쇄 루프 (Closed Loop)</h4>
-<ul>
-    <li><strong>특징:</strong> 자동 피드백 제어기 도입, 오차 감지 및 보정</li>
-    <li><strong>구성 요소:</strong>
-        <ul>
-            <li>비교기: 신호 변환기 포함</li>
-            <li>제어요소: 제어 밸브 등</li>
-            <li>피드백 요소: 트랜스미터로 실제값 감지</li>
-            <li>공정: 물리적 과정 (예: 물 히터)</li>
-        </ul>
-    </li>
-</ul>
-<img src="{{ url_for('static', filename='images/section4/closedloop.png') }}" alt="closedloop" width="900">
-<h4>10-3. 피드백 제어 vs 피드포워드 제어</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>구분</th>
-            <th>피드백 제어</th>
-            <th>피드포워드 제어</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>제어 방식</td>
-            <td>결과 기준 조정</td>
-            <td>원인 기준 조정 (예측 기반)</td>
-        </tr>
-        <tr>
-            <td>외란 대응</td>
-            <td>발생 후 감지 및 보정</td>
-            <td>발생 전 예측 및 대응</td>
-        </tr>
-        <tr>
-            <td>장점</td>
-            <td>정확한 결과 추적</td>
-            <td>빠른 대응, 지연 시간 없음</td>
-        </tr>
-        <tr>
-            <td>단점</td>
-            <td>응답 지연 가능</td>
-            <td>외란 예측 부정확 시 효과 없음</td>
-        </tr>
-        <tr>
-            <td>사용 방식</td>
-            <td>단독 사용 가능</td>
-            <td>항상 피드백과 병행</td>
-        </tr>
-    </tbody>
-</table>
-<img src="{{ url_for('static', filename='images/section4/feecback vs feedfoward.png') }}" alt="closedloop" width="900">
-<hr>
-
-<h3>🎛️ 11. 제어 모드 및 컨트롤러</h3>
-<h4>11-1. Two-Position 제어 (On-Off)</h4>
-<ul>
-    <li><strong>특징:</strong> 출력이 ON/OFF 상태만 가짐, 이진 장치 제어</li>
-    <li><strong>작동 방식:</strong> 역동작 (측정값 > 설정값: OFF, 측정값 < 설정값: ON)</li>
-    <li><strong>주의:</strong> 과도한 반복 작동 방지 위해 데드밴드/차동 적용</li>
-    <li><strong>예시:</strong>
-        <ul>
-            <li>목표 온도 22°C, 데드밴드 ±2°C</li>
-            <li>20°C 이하: 히터 ON</li>
-            <li>22°C~24°C: 변화 없음</li>
-            <li>24°C 이상: 히터 OFF</li>
-        </ul>
-    </li>
-</ul>
-
-<h4>11-2. 비례 (P), 적분 (I), 미분 (D) 제어</h4>
-<ul>
-    <li><strong>비례 (P):</strong> 오차에 비례한 출력, 잔류 오차 가능</li>
-    <p>
-        $$
-        CO = K_p (PV - SP) +  MO
-        $$
-    </p>
-    
-    <li><strong>적분 (I):</strong> 오차 누적값에 따라 출력, 오프셋 제거</li>
-    
-    <li><strong>미분 (D):</strong> 오차 변화 속도에 비례, 빠른 외란 대응</li>
-   
-</ul>
-
-
-
-
-
-<h4>11-3. 모드 조합</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>모드</th>
-            <th>설명</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>P</td><td>가장 기본, 잔류 오차 가능</td></tr>
-       
-        <tr><td>PI</td><td>오프셋 제거, 안정적 제어</td></tr>
-        <tr><td>PD</td><td>빠른 반응, 외란 억제</td></tr>
-        <tr><td>PID</td><td>속도, 정확도, 안정성 모두 갖춤</td></tr>
-    </tbody>
-</table>
-
-<h4>11-4. 오프셋 및 해결</h4>
-<ul>
-    <li><strong>오프셋:</strong> PV가 SP와 계속 차이나는 상태</li>
-    <li><strong>해결:</strong>
-        <ul>
-            <li>높은 Gain 사용 (오프셋 감소, 과도 시 불안정)</li>
-            <li>Manual Reset: 수동 출력 조정</li>
-            <li>Integral Mode: 자동 오프셋 제거</li>
-        </ul>
-    </li>
-</ul>
-
-<h4>11-5. PI 제어기</h4>
-<ul>
-    <li><strong>특징:</strong> 70~90% 플랜트 제어기에서 사용, 정확한 설정값 추적 및 오프셋 제거</li>
-    <p>
-        $$
-        CO = K_p (PV - SP) + K_i\int(PV-SP)dt+ MO
-        $$
-    </p>
-</ul>
-
-<h4>11-6. PD 제어기</h4>
-<ul>
-    <li><strong>특징:</strong> 오차 변화 속도에 선제적 반응, 시간 지연 큰 공정에 유리</li>
-    <p>
-        $$
-        CO = K_p (PV - SP) + K_d[d(PV-SP)/dt]+ MO
-        $$
-    </p>
-</ul>
-
-<h4>11-7. PID 제어기</h4>
-<ul>
-    <li><strong>특징:</strong> 즉시 반응(P), 오프셋 제거(I), 변화 속도 대응(D)</li>
-    <li><strong>장점:</strong> 속도, 정확도, 안정성 모두 우수</li>
-    <li><strong>단점:</strong> 튜닝 어려움, 과도 조정 시 불안정</li>
-    <p>
-        $$
-        CO = K_p (PV - SP) + K_i\int(PV-SP)dt+ K_d[d(PV-SP)/dt] + MO
-        $$
-    </p>
-</ul>
-
-<h4>11-8. 컨트롤러 튜닝</h4>
-<ul>
-    <li><strong>정의:</strong> Kp, Ti, Td 최적 조정</li>
-    <li><strong>예시 (보일러 증기 압력 제어):</strong>
-        <ul>
-            <li>Kp 증가: 반응 속도↑, 오버슈트 위험↑</li>
-            <li>Ti 감소: 오프셋 제거 속도↑, 진동 위험↑</li>
-            <li>Td 추가: 진동 억제, 선제 제어</li>
-        </ul>
-    </li>
-    <li><strong>Ziegler-Nichols 튜닝:</strong>
-        <ul>
-            <li>단계:
-                <ol>
-                    <li>비례 동작만 남기기 (Ti 최대, Td=0)</li>
-                    <li>작은 외란 생성 (예: 설정값 변경)</li>
-                    <li>Kp 조정: 진동 유지 지점(Ku, Pu) 찾기</li>
-                    <li>공식 적용: Kp = 0.6Ku, Ti = Pu/2, Td = Pu/8</li>
-                </ol>
+            <li><strong>센싱 요소:</strong> 벨로우즈/다이어프램, 압력에 따라 기계적 변형</li>
+            <li><strong>스프링 로딩:</strong> 설정 압력 도달 시 스프링 장력 극복, 스위치 작동</li>
+            <li><strong>스위칭 구조 (SPDT):</strong>
+                <ul>
+                    <li>압력 상승: 1-4번 접점 연결</li>
+                    <li>압력 하강: 1-2번 접점 연결</li>
+                    <li>공통점: 1번 접점</li>
+                </ul>
             </li>
         </ul>
-    </li>
-</ul>
 
-<hr>
+        <hr>
 
-<h3>🔧 12. 제어 밸브 (Control Valves)</h3>
-<h4>12-1. 선택 시 고려사항</h4>
-<ul>
-    <li><strong>밸브 본체 형상:</strong> Globe, Ball, Butterfly 등 (유량 특성, 압력 손실, 내구성)</li>
-    <li><strong>액추에이터 유형:</strong> 공압식, 전기식, 유압식 (제어 속도, 출력력)</li>
-    <li><strong>플러그 특성:</strong> Linear, Equal Percentage, Quick Open</li>
-    <li><strong>사이징 중요성:</strong>
+        <h3>📏 5. 레벨 센서</h3>
+        <h4>5-1. 게이지 글라스</h4>
         <ul>
-            <li>너무 작음: 유량 부족, 과도한 압력 손실, 수명 단축</li>
-            <li>너무 큼: 제어 불안정, 민감도 부족</li>
+            <li><strong>특징:</strong> 시각적 레벨 측정</li>
+            <li><strong>종류:</strong>
+                <ul>
+                    <li>투명형: 불투명 유체 레벨 확인</li>
+                    <li>반사형: 투명 유체를 반사 프리즘으로 확인</li>
+                </ul>
+            </li>
         </ul>
-    </li>
-    <li><strong>소음:</strong> 큰 ΔP로 터뷸런스 발생 (에어 노이즈, 캐비테이션)</li>
-</ul>
+        <img src="{{ url_for('static', filename='images/section4/flat gauge.png') }}" alt="게이지 글라스" width="800">
 
-<h4>12-2. 구성 요소</h4>
-<ul>
-    <li><strong>액추에이터:</strong> 밸브 개폐 힘 전달</li>
-    <li><strong>보닛:</strong> 스템 삽입, 누설 방지 패킹 포함</li>
-    <li><strong>바디:</strong> 유체 통과, 플러그로 유량 제어</li>
-    <li><strong>내부 부품:</strong>
+        <h4>5-2. 체인 및 테이프 플로트 게이지</h4>
         <ul>
-            <li>Valve Plug: 유량 조절 핵심</li>
-            <li>Stem: 액추에이터 움직임 전달</li>
-            <li>Packing: 스템 주변 밀봉</li>
-            <li>Cage: 유체 흐름 안정화</li>
-            <li>Seat Ring & Gasket: 유체 흐름 차단</li>
+            <li><strong>용도:</strong> 대형 비가압 저장 탱크</li>
+            <li><strong>특징:</strong> 탱크 전체 높이 측정</li>
         </ul>
-    </li>
-    <img src="{{ url_for('static', filename='images/section4/controlvalve.png') }}" alt="closedloop" width="900">
-    <img src="{{ url_for('static', filename='images/section4/assemblycontrolvalve.png') }}" alt="closedloop" width="900">
-</ul>
+        <img src="{{ url_for('static', filename='images/section4/chain and tape float gauge.png') }}" alt="체인 및 테이프 플로트 게이지" width="800">
 
-<h4>12-3. 유량 계수 (Cv)</h4>
-<ul>
-    <li><strong>정의:</strong> 1 psi 압력차에서 1분간 통과하는 US gallons/min</li>
-    <li><strong>특징:</strong> Cv 크면 유량 처리 능력↑</li>
-    <p>
-        $$
-        C_v = \frac{Q}{\sqrt{\Delta P / SG}}
-        $$
-    </p>
-</ul>
+        <h4>5-3. 레버 및 샤프트 플로트 게이지</h4>
+        <ul>
+            <li><strong>원리:</strong> 플로트가 액면 따라 이동, 레버로 전달</li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/level and shaft float gauge.png') }}" alt="레버 및 샤프트 플로트 게이지" width="800">
 
-<h4>12-4. 유량 특성 (Flow Characteristic)</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>특성</th>
-            <th>곡선 형태</th>
-            <th>유량 반응</th>
-            <th>주요 용도</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Quick-Opening</td>
-            <td>급격히 상승 후 평탄</td>
-            <td>초반 유량 급격히 증가</td>
-            <td>On/Off 밸브, 배출 밸브</td>
-        </tr>
-        <tr>
-            <td>Linear</td>
-            <td>직선 (기울기 일정)</td>
-            <td>열림 비율과 유량 비례</td>
-            <td>일정 유량 제어, 수위 제어</td>
-        </tr>
-        <tr>
-            <td>Equal-Percentage</td>
-            <td>초반 완만, 후반 가파름</td>
-            <td>유량이 현재 유량의 일정 비율 증가</td>
-            <td>압력 제어, 비선형 시스템</td>
-        </tr>
-        <tr>
-            <td>Modified Parabolic</td>
-            <td>Linear + EQ 혼합</td>
-            <td>초기 선형 + 후반 가파름</td>
-            <td>정밀성과 안정성 필요 경우</td>
-        </tr>
-    </tbody>
-</table>
-<img src="{{ url_for('static', filename='images/section4/characteristiccurve.png') }}" alt="closedloop" width="900">
-<h4>12-5. Choked Flow</h4>
-<ul>
-    <li><strong>정의:</strong> Vena Contracta(최소 유로 면적)에서 유체 속도가 음속에 도달하여, 이후 ΔP(압력차)를 더 증가시켜도 유량(Q)이 더 이상 증가하지 않는 현상</li>
-    <li><strong>발생 조건:</strong> 기체 또는 액체 모두 발생 가능. 기체는 마하수(Mach number)가 1에 도달할 때, 액체는 벤츄리 목 부근 압력이 액체의 증기압 이하로 떨어질 때 발생</li>
-    <li><strong>특징:</strong> 유량이 상류 조건(P1)만에 의존하게 되며, 하류 압력(P2)이 더 낮아져도 유량은 일정하게 유지됨</li>
-    <li><strong>보정 방법:</strong> 팽창 계수(Y)를 적용하여 실제 유량 감소를 반영. 특히 기체 유동에서는 Critical Pressure Ratio를 고려하여 Cv 계산에 반영</li>
-    <li><strong>실제 적용:</strong> 제어 밸브, 노즐, 오리피스 플레이트 등에서 설계 시 반드시 고려해야 하며, Choked Flow 발생 시 배출량이 제한되어 시스템 성능에 영향을 미침</li>
-</ul>
-<img src="{{ url_for('static', filename='images/section4/chokedflow.png') }}" alt="closedloop" width="900">
-<img src="{{ url_for('static', filename='images/section4/machnumber.png') }}" alt="closedloop" width="900">
-<h4>12-6. Critical Flow vs Subcritical Flow</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>구분</th>
-            <th>Critical Flow</th>
-            <th>Subcritical Flow</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>정의</td>
-            <td>유체 속도 음속 도달, 유량 증가 없음</td>
-            <td>속도 음속 미달, 압력 변화에 유량 증가</td>
-        </tr>
-        <tr>
-            <td>조건</td>
-            <td>P2/P1 < P_critical</td>
-            <td>P2/P1 > P_critical</td>
-        </tr>
-        <tr>
-            <td>영향</td>
-            <td>배출량 고정, 하류 조건 영향 없음</td>
-            <td>배출량이 P2에 의존</td>
-        </tr>
-        <tr>
-            <td>유량 계산</td>
-            <td>상류(P1) 압력만 고려</td>
-            <td>P1, P2 모두 고려</td>
-        </tr>
-    </tbody>
-</table>
+        <h4>5-4. 디스플레이서 레벨 타입</h4>
+        <ul>
+            <li><strong>원리:</strong> 토크 튜브로 회전력 발생</li>
+            <li><strong>특징:</strong> 밀도 변화 영향 적음, 트랜스미터/인디케이터 연동</li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/displacer level measuring device.png') }}" alt="디스플레이서 레벨 타입" width="800">
 
-<h4>12-7. 액체용 제어 밸브 (Liquid Service)</h4>
-<ul>
-    <li><strong>주의:</strong> Flashing과 Cavitation 고려</li>
-</ul>
+        <h4>5-5. 헤드 압력 타입</h4>
+        <ul>
+            <li><strong>원리:</strong> 유체 정수압 측정</li>
+            <li><strong>특징:</strong> 액체 밀도에 따라 측정값 변동</li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/head pressure level gauge.png') }}" alt="헤드 압력 타입" width="800">
 
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>구분</th>
-            <th>Flashing</th>
-            <th>Cavitation</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>정의</td>
-            <td>압력 증기압 이하로 떨어져 기화, 기체 상태로 배출</td>
-            <td>일시적 기화 후 압력 회복으로 기포 붕괴</td>
-        </tr>
-        <tr>
-            <td>유체 상태</td>
-            <td>액상 → 혼상 → 혼상 유지</td>
-            <td>액상 → 기포 → 액상 복귀</td>
-        </tr>
-        <tr>
-            <td>손상 정도</td>
-            <td>낮음 (연속 기화)</td>
-            <td>높음 (충격으로 밸브/파이프 손상)</td>
-        </tr>
-        <tr>
-            <td>위치</td>
-            <td>밸브 내 기화 → 하류 전달</td>
-            <td>밸브 직후 기포 붕괴</td>
-        </tr>
-        <tr>
-            <td>소음/진동</td>
-            <td>낮거나 중간</td>
-            <td>매우 큼</td>
-        </tr>
-    </tbody>
-</table>
+        <h4>5-6. 정전 용량식 센서 (Capacitance Probe)</h4>
+        <ul>
+            <li><strong>원리:</strong> 액체 유전율 변화로 정전 용량 증가</li>
+            <li><strong>구성:</strong> 탱크 내부 전극 또는 보호 튜브 내 전극</li>
+        </ul>
 
+        <h4>5-7. 유도파 레이더 (Guided Wave Radar, GWR)</h4>
+        <ul>
+            <li><strong>원리:</strong> 마이크로파 펄스 전송, 펄스 이동 시간으로 레벨 측정</li>
+            <li><strong>구성:</strong>
+                <ul>
+                    <li>마이크로파 펄스 생성 트랜스미터</li>
+                    <li>펄스 가이드 스틸 프로브</li>
+                </ul>
+            </li>
+        </ul>
+
+        <hr>
+
+        <h3>🌡️ 6. 온도 센서</h3>
+        <h4>6-1. 열전대 (Thermocouples)</h4>
+        <ul>
+            <li><strong>원리:</strong> 두 금속 접속으로 온도 차이에 따른 기전력 발생</li>
+            <li><strong>종류:</strong> K, J, T, E, N 타입</li>
+            <li><strong>장점:</strong> 간편, 저렴, 넓은 온도 범위</li>
+            <li><strong>단점:</strong> 정확도 낮음, 환경에 맞는 선택 필요</li>
+            <li><strong>응용:</strong> 산업, 실험실, 의료</li>
+        </ul>
+
+        <h4>6-2. 저항 온도계 (RTD)</h4>
+        <ul>
+            <li><strong>원리:</strong> 금속의 전기 저항이 온도에 따라 변화</li>
+            <li><strong>적합 금속:</strong> 백금, 구리, 니켈 (선형 저항-온도 관계)</li>
+            <li><strong>특징:</strong> 빠른 응답, 높은 정확도</li>
+        </ul>
+
+        <h4>6-3. 충전식 온도계 (Filled System Thermometer)</h4>
+        <ul>
+            <li><strong>구성:</strong> 벌브, 모세관, 측정 요소</li>
+            <li><strong>원리:</strong> 온도 변화로 액체/기체 부피 또는 압력 변화 감지</li>
+        </ul>
+
+        <hr>
+
+        <h3>📈 7. 유량계</h3>
+        <h4>7-1. 가변 헤드 유량계 (Variable Head Flow Meter)</h4>
+        <ul>
+            <li><strong>원리:</strong> 유체가 유량 요소 통과 시 발생하는 압력 차이 측정</li>
+            <li><strong>주요 유량 요소:</strong> 오리피스 플레이트, 유량 노즐, 벤추리 튜브, 피토 튜브, 평균 피토 튜브</li>
+        </ul>
+
+        <h4>7-2. 가변 면적 유량계 (Variable Area Flow Meter)</h4>
+        <ul>
+            <li><strong>원리:</strong> 로터미터, 유체 흐름에 따라 플로트가 튜브 내 상하 이동</li>
+        </ul>
+
+        <hr>
+
+        <h3>🔌 8. 신호 변환기 (Signal Converter)</h3>
+        <ul>
+            <li><strong>P/I:</strong> 공압 신호를 전자 신호(4-20mA)로 변환</li>
+            <li><strong>I/P:</strong> 전자 신호를 공압 신호로 변환, 노즐-배플 구조</li>
+            <li><strong>절연기 (Isolator):</strong> 접지 루프 전류/공통 모드 전압 제거</li>
+            <li><strong>전기 신호 변환기:</strong> 신호 범위 변환 (예: 4-20mA → 0-10Vdc)</li>
+            <li><strong>주파수 변환기:</strong> 유량계 펄스를 비례 전압 출력으로 변환</li>
+        </ul>
+
+        <hr>
+
+        <h3>📊 9. 레코더 및 지시기</h3>
+        <h4>9-1. 레코더 (Recorder)</h4>
+        <ul>
+            <li><strong>기능:</strong> 측정 변수를 시간 또는 다른 변수와의 관계로 그래프 기록</li>
+        </ul>
+
+        <h4>9-2. 지시기 (Indicator)</h4>
+        <ul>
+            <li><strong>기능:</strong> 온도, 압력, 유량 등 측정값 시각적 표시 (TI, PI, FI 등)</li>
+            <li><strong>종류:</strong>
+                <ul>
+                    <li>기계식: 눈금판 바늘 움직임 (다이어프램, 벨로우즈)</li>
+                    <li>전자식 아날로그: 광학 디스플레이</li>
+                    <li>디지털: LED, LCD, 가스 충전 튜브</li>
+                </ul>
+            </li>
+        </ul>
+
+        <hr>
+
+        <h3>🔄 10. 제어 루프 (Control Loop)</h3>
+        <h4>10-1. 개방 루프 (Open Loop)</h4>
+        <ul>
+            <li><strong>특징:</strong> 수동 조작, 피드백 없음, 외란 발생 시 제어 불가</li>
+            <li><strong>예시:</strong> 작업자가 밸브 수동 조작으로 온도 제어</li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/openloop.png') }}" alt="개방 루프" width="800">
+
+        <h4>10-2. 폐쇄 루프 (Closed Loop)</h4>
+        <ul>
+            <li><strong>특징:</strong> 자동 피드백 제어기, 오차 감지 및 보정</li>
+            <li><strong>구성 요소:</strong>
+                <ul>
+                    <li>비교기: 신호 변환기 포함</li>
+                    <li>제어요소: 제어 밸브 등</li>
+                    <li>피드백 요소: 트랜스미터로 실제값 감지</li>
+                    <li>공정: 물리적 과정 (예: 물 히터)</li>
+                </ul>
+            </li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/closedloop.png') }}" alt="폐쇄 루프" width="800">
+
+        <h4>10-3. 피드백 제어 vs 피드포워드 제어</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>피드백 제어</th>
+                    <th>피드포워드 제어</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>제어 방식</td>
+                    <td>결과 기준 조정</td>
+                    <td>원인 기준 조정 (예측 기반)</td>
+                </tr>
+                <tr>
+                    <td>외란 대응</td>
+                    <td>발생 후 감지 및 보정</td>
+                    <td>발생 전 예측 및 대응</td>
+                </tr>
+                <tr>
+                    <td>장점</td>
+                    <td>정확한 결과 추적</td>
+                    <td>빠른 대응, 지연 시간 없음</td>
+                </tr>
+                <tr>
+                    <td>단점</td>
+                    <td>응답 지연 가능</td>
+                    <td>외란 예측 부정확 시 효과 없음</td>
+                </tr>
+                <tr>
+                    <td>사용 방식</td>
+                    <td>단독 사용 가능</td>
+                    <td>피드백과 병행</td>
+                </tr>
+            </tbody>
+        </table>
+        <img src="{{ url_for('static', filename='images/section4/feecback vs feedfoward.png') }}" alt="피드백 vs 피드포워드" width="800">
+
+        <hr>
+
+        <h3>🎛️ 11. 제어 모드 및 컨트롤러</h3>
+        <h4>11-1. Two-Position 제어 (On-Off)</h4>
+        <ul>
+            <li><strong>특징:</strong> 출력이 ON/OFF, 이진 장치 제어</li>
+            <li><strong>작동 방식:</strong> 역동작 (측정값 > 설정값: OFF, 측정값 < 설정값: ON)</li>
+            <li><strong>주의:</strong> 과도한 반복 작동 방지 위해 데드밴드/차동 적용</li>
+            <li><strong>예시:</strong>
+                <ul>
+                    <li>목표 온도 22°C, 데드밴드 ±2°C</li>
+                    <li>20°C 이하: 히터 ON</li>
+                    <li>22°C~24°C: 변화 없음</li>
+                    <li>24°C 이상: 히터 OFF</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>11-2. 비례 (P), 적분 (I), 미분 (D) 제어</h4>
+        <ul>
+            <li><strong>비례 (P):</strong> 오차에 비례한 출력, 잔류 오차 가능
+                <p>
+                    \[
+                    CO = K_p (PV - SP) + MO
+                    \]
+                </p>
+            </li>
+            <li><strong>적분 (I):</strong> 오차 누적값에 따라 출력, 오프셋 제거</li>
+            <li><strong>미분 (D):</strong> 오차 변화 속도에 비례, 빠른 외란 대응</li>
+        </ul>
+
+        <h4>11-3. 모드 조합</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>모드</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>P</td><td>기본, 잔류 오차 가능</td></tr>
+                <tr><td>PI</td><td>오프셋 제거, 안정적 제어</td></tr>
+                <tr><td>PD</td><td>빠른 반응, 외란 억제</td></tr>
+                <tr><td>PID</td><td>속도, 정확도, 안정성 모두 갖춤</td></tr>
+            </tbody>
+        </table>
+
+        <h4>11-4. 오프셋 및 해결</h4>
+        <ul>
+            <li><strong>오프셋:</strong> PV와 SP 간 지속적인 차이</li>
+            <li><strong>해결:</strong>
+                <ul>
+                    <li>높은 Gain 사용 (오프셋 감소, 불안정 위험)</li>
+                    <li>Manual Reset: 수동 출력 조정</li>
+                    <li>Integral Mode: 자동 오프셋 제거</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>11-5. PI 제어기</h4>
+        <ul>
+            <li><strong>특징:</strong> 70~90% 플랜트에서 사용, 정확한 설정값 추적, 오프셋 제거</li>
+            <p>
+                \[
+                CO = K_p (PV - SP) + K_i \int (PV - SP) dt + MO
+                \]
+            </p>
+        </ul>
+
+        <h4>11-6. PD 제어기</h4>
+        <ul>
+            <li><strong>특징:</strong> 오차 변화 속도 선제 반응, 시간 지연 큰 공정에 유리</li>
+            <p>
+                \[
+                CO = K_p (PV - SP) + K_d \frac{d(PV - SP)}{dt} + MO
+                \]
+            </p>
+        </ul>
+
+        <h4>11-7. PID 제어기</h4>
+        <ul>
+            <li><strong>특징:</strong> 즉시 반응(P), 오프셋 제거(I), 변화 속도 대응(D)</li>
+            <li><strong>장점:</strong> 속도, 정확도, 안정성 우수</li>
+            <li><strong>단점:</strong> 튜닝 어려움, 과도 조정 시 불안정</li>
+            <p>
+                \[
+                CO = K_p (PV - SP) + K_i \int (PV - SP) dt + K_d \frac{d(PV - SP)}{dt} + MO
+                \]
+            </p>
+        </ul>
+
+        <h4>11-8. 컨트롤러 튜닝</h4>
+        <ul>
+            <li><strong>정의:</strong> Kp, Ti, Td 최적 조정</li>
+            <li><strong>예시 (보일러 증기 압력 제어):</strong>
+                <ul>
+                    <li>Kp 증가: 반응 속도↑, 오버슈트 위험↑</li>
+                    <li>Ti 감소: 오프셋 제거 속도↑, 진동 위험↑</li>
+                    <li>Td 추가: 진동 억제, 선제 제어</li>
+                </ul>
+            </li>
+            <li><strong>Ziegler-Nichols 튜닝:</strong>
+                <ul>
+                    <li>단계:
+                        <ol>
+                            <li>비례 동작만 남기기 (Ti 최대, Td=0)</li>
+                            <li>작은 외란 생성 (예: 설정값 변경)</li>
+                            <li>Kp 조정: 진동 유지 지점(Ku, Pu) 찾기</li>
+                            <li>공식 적용: Kp = 0.6Ku, Ti = Pu/2, Td = Pu/8</li>
+                        </ol>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <hr>
+
+        <h3>🔧 12. 제어 밸브 (Control Valves)</h3>
+        <h4>12-1. 선택 시 고려사항</h4>
+        <ul>
+            <li><strong>밸브 본체 형상:</strong> Globe, Ball, Butterfly (유량 특성, 압력 손실, 내구성)</li>
+            <li><strong>액추에이터 유형:</strong> 공압식, 전기식, 유압식 (제어 속도, 출력력)</li>
+            <li><strong>플러그 특성:</strong> Linear, Equal Percentage, Quick Open</li>
+            <li><strong>사이징 중요성:</strong>
+                <ul>
+                    <li>너무 작음: 유량 부족, 과도한 압력 손실, 수명 단축</li>
+                    <li>너무 큼: 제어 불안정, 민감도 부족</li>
+                </ul>
+            </li>
+            <li><strong>소음:</strong> 큰 ΔP로 터뷸런스 발생 (에어 노이즈, 캐비테이션)</li>
+        </ul>
+
+        <h4>12-2. 구성 요소</h4>
+        <ul>
+            <li><strong>액추에이터:</strong> 밸브 개폐 힘 전달</li>
+            <li><strong>보닛:</strong> 스템 삽입, 누설 방지 패킹 포함</li>
+            <li><strong>바디:</strong> 유체 통과, 플러그로 유량 제어</li>
+            <li><strong>내부 부품:</strong>
+                <ul>
+                    <li>Valve Plug: 유량 조절 핵심</li>
+                    <li>Stem: 액추에이터 움직임 전달</li>
+                    <li>Packing: 스템 주변 밀봉</li>
+                    <li>Cage: 유체 흐름 안정화</li>
+                    <li>Seat Ring & Gasket: 유체 흐름 차단</li>
+                </ul>
+            </li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/controlvalve.png') }}" alt="제어 밸브" width="800">
+        <img src="{{ url_for('static', filename='images/section4/assemblycontrolvalve.png') }}" alt="제어 밸브 조립" width="800">
+
+        <h4>12-3. 유량 계수 (Cv)</h4>
+        <ul>
+            <li><strong>정의:</strong> 1 psi 압력차에서 1분간 통과하는 US gallons/min</li>
+            <li><strong>특징:</strong> Cv 크면 유량 처리 능력↑</li>
+            <p>
+                \[
+                C_v = \frac{Q}{\sqrt{\Delta P / SG}}
+                \]
+            </p>
+        </ul>
+
+        <h4>12-4. 유량 특성 (Flow Characteristic)</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>특성</th>
+                    <th>곡선 형태</th>
+                    <th>유량 반응</th>
+                    <th>주요 용도</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Quick-Opening</td>
+                    <td>급격히 상승 후 평탄</td>
+                    <td>초반 유량 급격히 증가</td>
+                    <td>On/Off 밸브, 배출 밸브</td>
+                </tr>
+                <tr>
+                    <td>Linear</td>
+                    <td>직선 (기울기 일정)</td>
+                    <td>열림 비율과 유량 비례</td>
+                    <td>일정 유량 제어, 수위 제어</td>
+                </tr>
+                <tr>
+                    <td>Equal-Percentage</td>
+                    <td>초반 완만, 후반 가파름</td>
+                    <td>유량이 현재 유량의 일정 비율 증가</td>
+                    <td>압력 제어, 비선형 시스템</td>
+                </tr>
+                <tr>
+                    <td>Modified Parabolic</td>
+                    <td>Linear + EQ 혼합</td>
+                    <td>초기 선형 + 후반 가파름</td>
+                    <td>정밀성과 안정성 필요 경우</td>
+                </tr>
+            </tbody>
+        </table>
+        <img src="{{ url_for('static', filename='images/section4/characteristiccurve.png') }}" alt="유량 특성 곡선" width="800">
+
+        <h4>12-5. Choked Flow</h4>
+        <ul>
+            <li><strong>정의:</strong> Vena Contracta에서 유체 속도가 음속에 도달, ΔP 증가해도 유량(Q) 증가 없음</li>
+            <li><strong>발생 조건:</strong> 기체(마하수=1), 액체(압력이 증기압 이하)</li>
+            <li><strong>특징:</strong> 유량은 상류 조건(P1)에만 의존, 하류 압력(P2) 영향 없음</li>
+            <li><strong>보정:</strong> 팽창 계수(Y) 및 Critical Pressure Ratio 적용</li>
+            <li><strong>적용:</strong> 제어 밸브, 노즐, 오리피스 플레이트 설계 시 고려</li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/section4/chokedflow.png') }}" alt="Choked Flow" width="800">
+        <img src="{{ url_for('static', filename='images/section4/machnumber.png') }}" alt="마하수" width="800">
+
+        <h4>12-6. Critical Flow vs Subcritical Flow</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>Critical Flow</th>
+                    <th>Subcritical Flow</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>정의</td>
+                    <td>유체 속도 음속 도달, 유량 증가 없음</td>
+                    <td>속도 음속 미달, 압력 변화에 유량 증가</td>
+                </tr>
+                <tr>
+                    <td>조건</td>
+                    <td>P2/P1 < P_critical</td>
+                    <td>P2/P1 > P_critical</td>
+                </tr>
+                <tr>
+                    <td>영향</td>
+                    <td>배출량 고정, 하류 조건 영향 없음</td>
+                    <td>배출량이 P2에 의존</td>
+                </tr>
+                <tr>
+                    <td>유량 계산</td>
+                    <td>상류(P1) 압력만 고려</td>
+                    <td>P1, P2 모두 고려</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>12-7. 액체용 제어 밸브 (Liquid Service)</h4>
+        <ul>
+            <li><strong>주의:</strong> Flashing과 Cavitation 고려</li>
+        </ul>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>Flashing</th>
+                    <th>Cavitation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>정의</td>
+                    <td>압력 증기압 이하로 떨어져 기화, 기체 상태 배출</td>
+                    <td>일시적 기화 후 압력 회복으로 기포 붕괴</td>
+                </tr>
+                <tr>
+                    <td>유체 상태</td>
+                    <td>액상 → 혼상 → 혼상 유지</td>
+                    <td>액상 → 기포 → 액상 복귀</td>
+                </tr>
+                <tr>
+                    <td>손상 정도</td>
+                    <td>낮음 (연속 기화)</td>
+                    <td>높음 (충격으로 밸브/파이프 손상)</td>
+                </tr>
+                <tr>
+                    <td>위치</td>
+                    <td>밸브 내 기화 → 하류 전달</td>
+                    <td>밸브 직후 기포 붕괴</td>
+                </tr>
+                <tr>
+                    <td>소음/진동</td>
+                    <td>낮거나 중간</td>
+                    <td>매우 큼</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

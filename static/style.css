@@ -1,215 +1,434 @@
-/*HOME*/
-
-body {
+/*static/style.css*/
+/* ===== 공통 색상 변수 ===== */
+:root {
+    --primary-bg: #1e1e1e;
+    --secondary-bg: #2a2a2a;
+    --text-color: #e0e0e0;
+    --border-color: #444;
+    --highlight-blue: #90caf9;
+    --primary-blue: #3498db;
+    --primary-blue-dark: #1d6fa5;
+    --button-blue: #2979ff;
+    --button-blue-hover: #1565c0;
+    --link-blue: #64b5f6;
+  }
+  
+  /* ===== base.html ===== */
+  body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #121212, #1e1e1e);;
-    color: #e0e0e0;
-}
-/* 상단 타이틀  */
-header {
+    background: linear-gradient(to bottom, #121212, var(--primary-bg));
+    color: var(--text-color);
+  }
+  
+  header {
     background-color: #181818;
     padding: 25px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
-h1 {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  h1 {
     font-size: 30px;
     letter-spacing: 1px;
-    color: #42a5f5;
-}
-
-
-/* 사이드바 */
-.sidebar {
-    width: 240px; /*사이드바 넓이 */
-    background-color: #1a1a1a; /*사이드바 배경 */
-    padding: 45px; /*사이드바 안쪽 여백 */
-    border-right: 1px solid #333; /*오른쪽 테두리선 */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);/*박스 그림자 효과 */
-    border-radius: 0 8px 8px 0; /*오른쪽 모서리 둥글게 처리 */
-}
-
-.tree-menu {
-    list-style: none;      /* 리스트 앞 ● 제거 */
-    padding-left: 0;       /* 왼쪽 들여쓰기 제거 */
+    color: var(--highlight-blue);
+  }
+  
+  .bottom {
+    text-align: right;
+    background-color: #1a1a1a;
+    color: var(--text-color);
+    padding: 30px;
+    font-size: 14px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 40px;
+  }
+  
+  .bottom a {
+    color: var(--link-blue);
+    text-decoration: underline;
+  }
+  
+  .bottom a:hover {
+    color: var(--highlight-blue);
+  }
+  
+  /* ===== 사이드바 ===== */
+  .sidebar {
+    width: 240px;
+    background-color: #1a1a1a;
+    padding: 45px;
+    border-right: 1px solid #333;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0 8px 8px 0;
+  }
+  
+  .tree-menu {
+    list-style: none;
+    padding-left: 0;
     margin: 0;
-}
-
-.tree-menu li {
-    margin-bottom: 15px; /*메뉴 항목 간 간격  */
-}
-.tree-menu a {
-    color: #cccccc;
+  }
+  
+  .tree-menu li {
+    margin-bottom: 15px;
+  }
+  
+  .tree-menu a {
+    color: var(--text-color);
     font-weight: 500;
     padding: 8px 10px;
-    display: block;/*링크 전체를 박스처럼 만들어서 클릭 가능한 범위가 넓어짐  */
-    border-radius: 6px;
-}
-.tree-menu a:hover {
-    background-color: #2e2e2e;
-    color: #90caf9;
-}
-
-/* 메인 내용 */
-.main-content {
-    flex: 1;
-    padding: 30px;
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    margin: 0px 0px 0px 0px;  /* 메인 박스 여백 */
-    box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
-
-.container {
-    display: flex;/* 👉 가로로 배치되게 함 */ 
-    align-items: flex-start;  /* 👉 위쪽 정렬 */
-    
-}
-
-.sidebar-item {
-    margin-bottom: 10px;
-}
-
-.dropdown-btn {
-    background-color: transparent;
-    color: #cccccc;                /* 사이드바 텍스트와 어울리게 */
-    border: none;
-    text-align: left;
-    padding: 8px 10px;
-    font-size: 15px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 6px;
-    text-decoration: none;         /* 밑줄 제거 */
     display: block;
+    border-radius: 6px;
+  }
+  
+  .tree-menu a:hover {
+    background-color: var(--secondary-bg);
+    color: var(--highlight-blue);
+  }
+  
+  /* ===== 드롭다운 버튼 ===== */
+  .dropdown-btn {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 8px 10px;
+    display: block;
+    border-radius: 6px;
+    width: 100%;
+    text-align: left;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
     text-decoration: underline;
-}
-
-.dropdown-btn:hover {
-    background-color: #2e2e2e;     /* 호버 시 약간 밝게 */
-    color: #90caf9;                /* 포인트 색상 */
-}
-
-.dropdown-container {
+  }
+  
+  .dropdown-btn:hover,
+  .dropdown-btn.active {
+    background-color: var(--secondary-bg);
+    color: var(--highlight-blue);
+  }
+  
+  .dropdown-container {
     display: none;
     flex-direction: column;
-    padding-left: 20px;
-}
-
-.dropdown-container.show {
+    padding-left: 15px;
+  }
+  
+  .dropdown-container.show {
+    display: flex;
+  }
+  
+  .dropdown-container a {
     display: block;
-}
-
-.dropdown-btn.active {
-    font-weight: bold;
-    color: #90caf9;
-}
-
-.dropdown-container a {
-    display: block;
-    padding: 5px 10px;
-    color: #ccc;
+    padding: 6px 10px;
+    color: var(--text-color);
     text-decoration: none;
+    border-radius: 4px;
+  }
+  
+  .dropdown-container a:hover {
+    background-color: var(--secondary-bg);
+    color: var(--highlight-blue);
+  }
+  
+  /* ===== 메인 컨텐츠 ===== */
+  .container {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .main-content {
+    flex: 1;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: var(--primary-bg);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    overflow-x: auto;
+    min-height: calc(100vh - 200px);
 }
 
-.dropdown-container a:hover {
-    color: white;
-}
-
-.bottom {
-    text-align: right; 
-    background-color: #1a1a1a; /*사이드바 배경 */
-    padding: 45px; /*사이드바 안쪽 여백 */
-    border-right: 1px solid #333; /*오른쪽 테두리선 */
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);/*박스 그림자 효과 */
-    border-radius: 0 8px 8px 0; /*오른쪽 모서리 둥글게 처리 */
-}
-
-/* SECTION0 */
-.form-container {
-    margin-top: 20px;
-}
-
-fieldset {
+ 
+  
+  /* ===== section0.html ===== */
+  fieldset {
     margin-bottom: 20px;
     padding: 15px;
-    border: 1px solid #444;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-}
-
-.component-row, .input-group {
+  }
+  
+  .input-group,
+  .component-group {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     align-items: center;
-}
-
-.component-row label,
-.input-group label {
-    min-width: 100px;
+  }
+  
+  .input-group label,
+  .component-group label {
+    min-width: 110px;
     font-weight: 500;
-}
-
-.result-table {
+  }
+  
+  .input-group input,
+  .component-group input,
+  .component-group select {
+    width: 150px;
+    padding: 6px;
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+  }
+  
+  .result-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     font-size: 0.95em;
-}
-
-.result-table th,
-.result-table td {
+  }
+  
+  .result-table th,
+  .result-table td {
     padding: 8px 12px;
-    border-bottom: 1px solid #444;
-}
-
-.result-table th {
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .result-table th {
+    background-color: var(--secondary-bg);
+    color: var(--highlight-blue);
     text-align: left;
-    background-color: #2c2c2c;
-    color: #90caf9;
-}
-
-.result-table td {
-    color: #e0e0e0;
-}
-
-.remove-btn {
+  }
+  
+  .result-table td {
+    color: var(--text-color);
+  }
+  
+  .remove-btn {
     margin-left: 10px;
     background-color: #333;
     color: white;
-    border: none;
     padding: 4px 8px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.remove-btn:hover {
+  }
+  
+  .remove-btn:hover {
     background-color: #555;
-}
-
-.input-group, .component-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.input-group label,
-.component-group label {
-    min-width: 110px;
-    font-weight: 500;
-}
-
-.input-group input,
-.component-group input,
-.component-group select {
-    width: 150px;
-}
-
-.submit-btn {
+  }
+  
+  .submit-btn {
     margin-top: 10px;
-}
+    background-color: var(--button-blue);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .submit-btn:hover {
+    background-color: var(--button-blue-hover);
+  }
+  
+  /* ===== board_form.html ===== */
+  .board-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: var(--primary-bg);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .board-form .form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .board-form label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-color);
+  }
+  
+  .board-form input[type="text"],
+  .board-form input[type="file"],
+  .board-form textarea {
+    padding: 10px;
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .board-form #editor {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .board-form .submit-btn {
+    background-color: var(--button-blue);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    float: right;
+    margin-top: 20px;
+  }
+  
+  .board-form .submit-btn:hover {
+    background-color: var(--button-blue-hover);
+  }
+  
+  /* ===== board_list.html ===== */
+  .board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 10px 0;
+  }
+  
+  .write-btn {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .write-btn:hover {
+    background-color: var(--primary-blue-dark);
+  }
+  
+  .board-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--primary-bg);
+  }
+  
+  .board-table th,
+  .board-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+  }
+  
+  .board-table tr:hover {
+    background-color: var(--secondary-bg);
+    cursor: pointer;
+  }
+  
+  /* ===== board_post.html ===== */
+  .post-container {
+    max-width: 800px;
+    margin: auto;
+    background-color: var(--primary-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .post-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--highlight-blue);
+  }
+  
+  .post-meta {
+    font-size: 14px;
+    color: #aaa;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .post-content {
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 20px;
+  }
+  
+  .post-attachment {
+    margin-top: 20px;
+    background: var(--secondary-bg);
+    padding: 10px;
+    border-radius: 6px;
+  }
+  
+  .post-attachment a {
+    color: var(--link-blue);
+    text-decoration: underline;
+  }
+  
+  .back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--link-blue);
+    text-decoration: none;
+  }
+  
+  .back-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* ===== 이미지 조절 기능 ===== */
+  .resizable-wrapper {
+    display: inline-block;
+    resize: both;
+    overflow: auto;
+    max-width: 100%;
+    border: 1px dashed #666;
+  }
+  
+  .resizable-wrapper img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+  
+  /* ===== 검색 ===== */
+  .search-form {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .search-form input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+  }
+  
+  .search-form button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .search-form button:hover {
+    background-color: var(--primary-blue-dark);
+  }

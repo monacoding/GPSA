@@ -1,89 +1,89 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <div class="main-content">
+        <h2>📦 Section 2: 제품 사양 (Product Specifications)</h2>
+        <p>
+            이 섹션에서는 천연가스 액체(NGL) 제품의 사양 및 품질 기준을 다룹니다.<br>
+            GPA 표준을 기반으로 상업용 프로판, 부탄, 혼합물, HD-5 프로판 및 기타 분별 제품의 주요 특성을 설명합니다.
+        </p>
 
-<h2>📦 Section 2: 제품 사양 (Product Specifications)</h2>
-<p>
-    이 섹션에서는 천연가스 액체(NGL) 제품의 사양 및 품질 기준을 다룹니다.<br>
-    GPA 표준을 기반으로 상업용 프로판, 부탄, 혼합물, HD-5 프로판 및 기타 분별 제품의 주요 특성을 설명합니다.
-</p>
+        <hr>
 
-<hr>
-
-<h3>📊 GPA 상업용 LPG 제품 사양 (GPA Standard 2140)</h3>
-<ul>
-    <li><strong>구성 성분:</strong>
+        <h3>📊 GPA 상업용 LPG 제품 사양 (GPA Standard 2140)</h3>
         <ul>
-            <li>Commercial Propane: 프로판 및/또는 프로필렌 위주</li>
-            <li>Commercial Butane: 부탄 및/또는 뷰틸렌 위주</li>
-            <li>Propane HD-5: 최소 90% 프로판, 최대 5% 프로필렌</li>
+            <li><strong>구성 성분:</strong>
+                <ul>
+                    <li>Commercial Propane: 프로판 및/또는 프로필렌 위주</li>
+                    <li>Commercial Butane: 부탄 및/또는 뷰틸렌 위주</li>
+                    <li>Propane HD-5: 최소 90% 프로판, 최대 5% 프로필렌</li>
+                </ul>
+            </li>
+            <li><strong>증기압 (37.8°C):</strong> 최대 1434 kPa (프로판 기준)</li>
+            <li><strong>휘발성 잔류물:</strong> 95% 증발 온도 기준 -37°C, 부탄 이상 2.5 vol% 이하</li>
+            <li><strong>잔류물:</strong> 최대 0.05 cm³, 오일 얼룩 없음</li>
+            <li><strong>구리 스트립 부식 시험:</strong> 최대 No.1</li>
+            <li><strong>총 황 함량:</strong>
+                <ul>
+                    <li>Commercial Propane: 최대 185 mg/kg</li>
+                    <li>HD-5 Propane: 최대 123 mg/kg</li>
+                    <li>Butanes: 최대 140 mg/kg</li>
+                </ul>
+            </li>
+            <li><strong>수분:</strong> 자유 수 없음 (GPA 코발트 브로마이드 시험 또는 Valve Freeze Test)</li>
         </ul>
-    </li>
-    <li><strong>증기압 (37.8°C):</strong> 최대 1434 kPa (프로판 기준)</li>
-    <li><strong>휘발성 잔류물:</strong> 95% 증발 온도 기준 -37°C, 부탄 이상 2.5 vol% 이하</li>
-    <li><strong>잔류물:</strong> 최대 0.05 cm³, 오일 얼룩 없음</li>
-    <li><strong>구리 스트립 부식 시험:</strong> 최대 No.1</li>
-    <li><strong>총 황 함량:</strong>
+
+        <hr>
+
+        <h3>🧪 분별 제품 사양 (GPA Standard 2107)</h3>
         <ul>
-            <li>Commercial Propane: 최대 185 mg/kg</li>
-            <li>HD-5 Propane: 최대 123 mg/kg</li>
-            <li>Butanes: 최대 140 mg/kg</li>
+            <li><strong>Fractionation Propane:</strong> 90% 이상 프로판, 수분 없음, 총 황 ≤ 100 ppm wt</li>
+            <li><strong>Fractionation Iso-Butane:</strong> 95% 이상 아이소부탄</li>
+            <li><strong>Fractionation Normal Butane:</strong> 94% 이상 노말부탄</li>
+            <li><strong>Fractionation Ethane:</strong> 최소 95% 에탄, 메탄 3% 이하</li>
         </ul>
-    </li>
-    <li><strong>수분:</strong> 자유 수 없음 (GPA 코발트 브로마이드 시험 또는 Valve Freeze Test)</li>
-</ul>
 
-<hr>
+        <hr>
 
-<h3>🧪 분별 제품 사양 (GPA Standard 2107)</h3>
-<ul>
-    <li><strong>Fractionation Propane:</strong> 90% 이상 프로판, 수분 없음, 총 황 ≤ 100 ppm wt</li>
-    <li><strong>Fractionation Iso-Butane:</strong> 95% 이상 아이소부탄</li>
-    <li><strong>Fractionation Normal Butane:</strong> 94% 이상 노말부탄</li>
-    <li><strong>Fractionation Ethane:</strong> 최소 95% 에탄, 메탄 3% 이하</li>
-</ul>
-
-<hr>
-
-<h3>🔍 천연가스 품질 사양 (Pipeline Quality Gas)</h3>
-<ul>
-    <li><strong>메탄:</strong> 최소 75%</li>
-    <li><strong>수소 황:</strong> 6–7 mg/m³ 이하</li>
-    <li><strong>총 황:</strong> 최대 115–460 mg/m³</li>
-    <li><strong>발열량:</strong> 35,400 – 42,800 kJ/m³</li>
-    <li><strong>수분:</strong> 자유수 없음</li>
-    <li><strong>고형물:</strong> 파이프 손상 유발 미립자 없음 (≤ 15 μm)</li>
-</ul>
-
-<hr>
-
-<h3>🧯 기타 고려 사항</h3>
-<ul>
-    <li><strong>수분 관리:</strong> 하이드레이트 형성 방지 및 기기 동결 방지</li>
-    <li><strong>잔류물:</strong> 38°C 이상 비휘발성 성분 ≤ 0.05 cm³</li>
-    <li><strong>부식성 물질:</strong> 황화수소, 원소 황, 폴리설파이드 주의</li>
-    <li><strong>비규격 오염물:</strong> 암모니아, 불화물 등은 장비 손상 위험</li>
-</ul>
-
-<hr>
-
-<h3>🛢 LNG 및 Y-Grade 제품 사양</h3>
-<ul>
-    <li><strong>LNG 예시 사양:</strong>
+        <h3>🔍 천연가스 품질 사양 (Pipeline Quality Gas)</h3>
         <ul>
-            <li>질소: ≤ 1 mol%</li>
-            <li>CO₂: ≤ 50 ppm</li>
-            <li>황화수소: ≤ 4 ppm</li>
-            <li>수분: ≤ 1 ppm</li>
+            <li><strong>메탄:</strong> 최소 75%</li>
+            <li><strong>수소 황:</strong> 6–7 mg/m³ 이하</li>
+            <li><strong>총 황:</strong> 최대 115–460 mg/m³</li>
+            <li><strong>발열량:</strong> 35,400 – 42,800 kJ/m³</li>
+            <li><strong>수분:</strong> 자유수 없음</li>
+            <li><strong>고형물:</strong> 파이프 손상 유발 미립자 없음 (≤ 15 μm)</li>
         </ul>
-    </li>
-    <li><strong>Y-Grade 제품:</strong>
-        <ul>
-            <li>증기압: 최대 1434 kPa</li>
-            <li>황화수소 없음, 구리 부식도 No.1 만족</li>
-            <li>색도: Saybolt +25 이상</li>
-        </ul>
-    </li>
-</ul>
 
+        <hr>
+
+        <h3>🧯 기타 고려 사항</h3>
+        <ul>
+            <li><strong>수분 관리:</strong> 하이드레이트 형성 방지 및 기기 동결 방지</li>
+            <li><strong>잔류물:</strong> 38°C 이상 비휘발성 성분 ≤ 0.05 cm³</li>
+            <li><strong>부식성 물질:</strong> 황화수소, 원소 황, 폴리설파이드 주의</li>
+            <li><strong>비규격 오염물:</strong> 암모니아, 불화물 등은 장비 손상 위험</li>
+        </ul>
+
+        <hr>
+
+        <h3>🛢 LNG 및 Y-Grade 제품 사양</h3>
+        <ul>
+            <li><strong>LNG 예시 사양:</strong>
+                <ul>
+                    <li>질소: ≤ 1 mol%</li>
+                    <li>CO₂: ≤ 50 ppm</li>
+                    <li>황화수소: ≤ 4 ppm</li>
+                    <li>수분: ≤ 1 ppm</li>
+                </ul>
+            </li>
+            <li><strong>Y-Grade 제품:</strong>
+                <ul>
+                    <li>증기압: 최대 1434 kPa</li>
+                    <li>황화수소 없음, 구리 부식도 No.1 만족</li>
+                    <li>색도: Saybolt +25 이상</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 {% endblock %}

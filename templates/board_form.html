@@ -1,0 +1,76 @@
+<!-- HEAD에 Toast UI Editor CDN 추가 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+{% extends "base.html" %}
+{% block content %}
+    <div class="main-content">
+        <h2>✍ 글 작성</h2>
+
+        <form action="{{ url_for('board.write_post') }}" method="POST" enctype="multipart/form-data" class="board-form">
+            <div class="form-group">
+                <label for="category">주제</label>
+                <input type="text" name="category" id="category" required placeholder="예: 질문, 정보, 후기 등">
+            </div>
+
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" name="title" id="title" required placeholder="제목을 입력하세요">
+            </div>
+
+            <div class="form-group">
+                <label for="editor">내용</label>
+                <input type="hidden" name="content" id="hidden-content">
+                <div id="editor"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="attachment">파일 첨부</label>
+                <input type="file" name="attachment" id="attachment">
+            </div>
+
+            <div class="form-group text-right">
+                <button type="submit" class="submit-btn">📎 등록</button>
+            </div>
+        </form>
+
+        <script>
+            const editor = new toastui.Editor({
+                el: document.querySelector('#editor'),
+                height: '400px',
+                initialEditType: 'wysiwyg',
+                previewStyle: 'vertical',
+                hooks: {
+                    addImageBlobHook: async (blob, callback) => {
+                        const formData = new FormData();
+                        formData.append('image', blob);
+                        const response = await fetch('/board/upload_image', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        const data = await response.json();
+                        callback(data.url, 'image');
+                    }
+                }
+            });
+
+            // 폼 제출 시 에디터 내용을 hidden input에 삽입
+            document.querySelector('form').addEventListener('submit', function () {
+                document.querySelector('#hidden-content').value = editor.getHTML();
+            });
+
+            // 이미지에 resizable-wrapper 감싸기
+            document.addEventListener('DOMSubtreeModified', () => {
+                const images = document.querySelectorAll('.toastui-editor-contents img');
+                images.forEach(img => {
+                    if (!img.closest('.resizable-wrapper')) {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'resizable-wrapper';
+                        img.parentNode.insertBefore(wrapper, img);
+                        wrapper.appendChild(img);
+                    }
+                });
+            });
+        </script>
+    </div>
+{% endblock %}

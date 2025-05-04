@@ -1,237 +1,233 @@
 {% extends "base.html" %}
 {% block content %}
-
-<head>
-    
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
+    <div class="main-content">
+        <h2>📏 Section 3: Measurement</h2>
+        <p>
+            다양한 유체(기체, 액체, 증기 등)의 유량 측정 방법을 다룹니다.<br>
+            주요 내용은 유량 계산 가이드, 오리피스 미터, 초음파 미터, 코리올리 미터, 천연가스 및 NGL 샘플링, 질량 측정 방식 등입니다.
+        </p>
 
+        <hr>
 
-<h2>📏 Section 3: Measurement</h2>
-<p>
-    다양한 유체(기체, 액체, 증기 등)의 유량 측정 방법을 다룹니다.<br>
-    주요 내용은 유량 계산 가이드, 오리피스 미터, 초음파 미터, 코리올리 미터, 천연가스 및 NGL 샘플링, 질량 측정 방식 등입니다.
-</p>
+        <h3>📏 3-1. 오리피스 미터 측정</h3>
+        <h4>1. 개념</h4>
+        <p>
+            오리피스 미터는 유체의 압력차를 이용해 유량을 계산하는 대표적인 방식입니다.
+        </p>
+        <ul>
+            <li>구조가 단순하고 유지보수 용이</li>
+            <li>custody transfer(거래용 계측)에 광범위하게 사용</li>
+        </ul>
 
-<hr>
+        <h4>2. 구성요소</h4>
+        <ul>
+            <li><strong>오리피스 플레이트:</strong> 구멍이 있는 판</li>
+            <li><strong>플랜지 & 미터 튜브:</strong> 설치 및 유량 안정화</li>
+            <li><strong>차압 트랜스미터:</strong> 압력차를 감지</li>
+        </ul>
 
-<h3>📏 3-1. 오리피스 미터 측정</h3>
-<h4>1. 개념</h4>
-<p>
-    오리피스 미터는 유체의 압력차를 이용해 유량을 계산하는 대표적인 방식입니다.
-</p>
-<ul>
-    <li>구조가 단순하고 유지보수 용이</li>
-    <li>custody transfer(거래용 계측)에 광범위하게 사용</li>
-</ul>
+        <h4>3. 계산 기준 (Edge Thickness e)</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>기준</th>
+                    <th>설명</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>최소 두께</td>
+                    <td>e ≥ 0.01d 또는 0.005인치 이상 중 큰 값</td>
+                </tr>
+                <tr>
+                    <td>최대 두께</td>
+                    <td>e ≤ 0.125d 또는 e ≥ 0.02d 중 작은 값</td>
+                </tr>
+            </tbody>
+        </table>
 
-<h4>2. 구성요소</h4>
-<ul>
-    <li><strong>오리피스 플레이트:</strong> 구멍이 있는 판</li>
-    <li><strong>플랜지 & 미터 튜브:</strong> 설치 및 유량 안정화</li>
-    <li><strong>차압 트랜스미터:</strong> 압력차를 감지</li>
-</ul>
+        <hr>
 
-<h4>3. 계산 기준 (Edge Thickness e)</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>기준</th>
-            <th>설명</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>최소 두께</td>
-            <td>e ≥ 0.01d 또는 0.005인치 이상 중 큰 값</td>
-        </tr>
-        <tr>
-            <td>최대 두께</td>
-            <td>e ≤ 0.125d 또는 e ≥ 0.02d 중 작은 값</td>
-        </tr>
-    </tbody>
-</table>
+        <h3>📡 3-2. 초음파 유량계</h3>
+        <p>초음파 전파 시간 차이를 이용하여 유체 유속을 측정합니다. 기체/액체 모두 가능하지만 Single-phase 조건에서만 적용.</p>
 
-<hr>
+        <h4>작동 원리</h4>
+        <ul>
+            <li>상류/하류 트랜스듀서로 초음파 송신</li>
+            <li>t₁ (흐름 방향) < t₂ (역방향) → 시간 차이로 유량 계산</li>
+        </ul>
 
-<h3>📡 3-2. 초음파 유량계</h3>
-<p>초음파 전파 시간 차이를 이용하여 유체 유속을 측정합니다. 기체/액체 모두 가능하지만 Single-phase 조건에서만 적용.</p>
+        <h4>장점</h4>
+        <ul>
+            <li>비침습 방식, 압력 강하 없음</li>
+            <li>설치 간편</li>
+        </ul>
 
-<h4>작동 원리</h4>
-<ul>
-    <li>상류/하류 트랜스듀서로 초음파 송신</li>
-    <li>t₁ (흐름 방향) < t₂ (역방향) → 시간 차이로 유량 계산</li>
-</ul>
+        <hr>
 
-<h4>장점</h4>
-<ul>
-    <li>비침습 방식, 압력 강하 없음</li>
-    <li>설치 간편</li>
-</ul>
+        <h3>⚖️ 코리올리 유량계</h3>
+        <p>질량 유량을 직접 측정하며 밀도와 온도도 동시에 측정 가능.</p>
 
-<hr>
+        <h4>작동 원리</h4>
+        <ul>
+            <li>진동하는 튜브 내 유체가 흐르며 코리올리 힘 발생</li>
+            <li>비틀림 정도 ∝ 질량 유량</li>
+        </ul>
 
-<h3>⚖️ 코리올리 유량계</h3>
-<p>질량 유량을 직접 측정하며 밀도와 온도도 동시에 측정 가능.</p>
+        <h4>장점</h4>
+        <ul>
+            <li>고정밀 질량 측정</li>
+            <li>설치 유연성 및 양방향 측정</li>
+        </ul>
+        <h4>단점</h4>
+        <ul>
+            <li>비용이 높음</li>
+            <li>압력 손실이 큼</li>
+        </ul>
 
-<h4>작동 원리</h4>
-<ul>
-    <li>진동하는 튜브 내 유체가 흐르며 코리올리 힘 발생</li>
-    <li>비틀림 정도 ∝ 질량 유량</li>
-</ul>
+        <hr>
 
-<h4>장점</h4>
-<ul>
-    <li>고정밀 질량 측정</li>
-    <li>설치 유연성 및 양방향 측정</li>
-</ul>
-<h4>단점</h4>
-<ul>
-    <li>비용이 높음</li>
-    <li>압력 손실이 큼</li>
-</ul>
+        <h3>🧪 천연가스 샘플링</h3>
+        <h4>샘플링 조건</h4>
+        <ul>
+            <li>방해 요소(밸브, 엘보 등)로부터 충분한 거리 확보</li>
+            <li>직관: 8D 이상 / 밸브 후 최소 5D 이상</li>
+            <li>관 단면 1/3 지점에서 샘플링</li>
+            <li><strong>탑 다운(tap-up)</strong> 방식 권장 (응축 방지)</li>
+        </ul>
 
-<hr>
+        <hr>
 
-<h3>🧪 천연가스 샘플링</h3>
-<h4>샘플링 조건</h4>
-<ul>
-    <li>방해 요소(밸브, 엘보 등)로부터 충분한 거리 확보</li>
-    <li>직관: 8D 이상 / 밸브 후 최소 5D 이상</li>
-    <li>관 단면 1/3 지점에서 샘플링</li>
-    <li><strong>탑 다운(tap-up)</strong> 방식 권장 (응축 방지)</li>
-</ul>
+        <h3>📈 가스 크로마토그래피</h3>
 
-<hr>
+        <h4>샘플 조건</h4>
+        <ul>
+            <li>100% 기체 또는 100% 액체 상태</li>
+            <li>기체 샘플: 60°C 이상 가열, 실린더 내부 완전 기화</li>
+            <li>액체 샘플: 냉각 유지 + 압력 유지 (피스톤 or 퍼지)</li>
+        </ul>
 
-<h3>📈 가스 크로마토그래피</h3>
+        <h4>구성요소</h4>
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>단계</th>
+                    <th>장치</th>
+                    <th>기능</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>① 시료 도입부</td><td>샘플 루프</td><td>소량 주입</td></tr>
+                <tr><td>② 이동상</td><td>불활성 가스</td><td>성분 운반</td></tr>
+                <tr><td>③ 컬럼</td><td>분리의 핵심</td><td>성분 분리</td></tr>
+                <tr><td>④ 검출기</td><td>FID, TCD 등</td><td>성분 감지</td></tr>
+            </tbody>
+        </table>
 
-<h4>샘플 조건</h4>
-<ul>
-    <li>100% 기체 또는 100% 액체 상태</li>
-    <li>기체 샘플: 60°C 이상 가열, 실린더 내부 완전 기화</li>
-    <li>액체 샘플: 냉각 유지 + 압력 유지 (피스톤 or 퍼지)</li>
-</ul>
+        <h4>분리 메커니즘</h4>
+        <p>
+            성분마다 컬럼 내 이동 속도가 다름 → 도착 시간 차이 → 피크 발생 → 크로마토그램 생성
+        </p>
 
-<h4>구성요소</h4>
-<table class="result-table">
-    <thead>
-        <tr>
-            <th>단계</th>
-            <th>장치</th>
-            <th>기능</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>① 시료 도입부</td><td>샘플 루프</td><td>소량 주입</td></tr>
-        <tr><td>② 이동상</td><td>불활성 가스</td><td>성분 운반</td></tr>
-        <tr><td>③ 컬럼</td><td>분리의 핵심</td><td>성분 분리</td></tr>
-        <tr><td>④ 검출기</td><td>FID, TCD 등</td><td>성분 감지</td></tr>
-    </tbody>
-</table>
+        <h4>예시 (도달 순서)</h4>
+        <pre>
+            CH4 → C2H6 → C3H8 → i-C4 → n-C4 → i-C5 → n-C5 → C6+ → N2 → CO2
+        </pre>
 
-<h4>분리 메커니즘</h4>
-<p>
-    성분마다 컬럼 내 이동 속도가 다름 → 도착 시간 차이 → 피크 발생 → 크로마토그램 생성
-</p>
+        <hr>
 
-<h4>예시 (도달 순서)</h4>
-<pre>
-CH4 → C2H6 → C3H8 → i-C4 → n-C4 → i-C5 → n-C5 → C6+ → N2 → CO2
-</pre>
+        <h3>🔥 ISO 6976 - 발열량 계산</h3>
+        <h4>정의</h4>
+        <ul>
+            <li><strong>고위 발열량 (H<sub>s</sub>):</strong> 완전 연소 시 생성된 열량 (물 액체)</li>
+            <li><strong>저위 발열량 (H<sub>i</sub>):</strong> 수증기 상태일 때의 발열량</li>
+            <li><strong>상대 밀도:</strong> 공기 대비 밀도 비율</li>
+            <li><strong>워브 지수:</strong> H<sub>s</sub> ÷ √(상대 밀도)</li>
+        </ul>
 
-<hr>
+        <h4>계산 예시</h4>
+        <ul>
+            <li><strong>H<sub>s, mol</sub>:</strong> Σ Xj × H<sub>s,j</sub></li>
+            <li><strong>H<sub>s, mass</sub>:</strong> H<sub>s, mol</sub> ÷ M<sub>j</sub></li>
+        </ul>
 
-<h3>🔥 ISO 6976 - 발열량 계산</h3>
-<h4>정의</h4>
-<ul>
-    <li><strong>고위 발열량 (H<sub>s</sub>):</strong> 완전 연소 시 생성된 열량 (물 액체)</li>
-    <li><strong>저위 발열량 (H<sub>i</sub>):</strong> 수증기 상태일 때의 발열량</li>
-    <li><strong>상대 밀도:</strong> 공기 대비 밀도 비율</li>
-    <li><strong>워브 지수:</strong> H<sub>s</sub> ÷ √(상대 밀도)</li>
-</ul>
+        <hr>
 
-<h4>계산 예시</h4>
-<ul>
-    <li><strong>H<sub>s, mol</sub>:</strong> Σ Xj × H<sub>s,j</sub></li>
-    <li><strong>H<sub>s, mass</sub>:</strong> H<sub>s, mol</sub> ÷ M<sub>j</sub></li>
-</ul>
+        <h3>🌡️ TCD (열전도 검출기)</h3>
+        <p>
+            유체의 열전도도 차이 → 전열 필라멘트 저항 변화 → 전기 신호로 변환<br>
+            주로 He 또는 H<sub>2</sub> 사용
+        </p>
+        <hr>
 
-<hr>
+        <h3>📐 ISO 5167 오리피스 유량 계산</h3>
 
-<h3>🌡️ TCD (열전도 검출기)</h3>
-<p>
-    유체의 열전도도 차이 → 전열 필라멘트 저항 변화 → 전기 신호로 변환<br>
-    주로 He 또는 H<sub>2</sub> 사용
-</p>
-<hr>
+        <h4>기본 개념</h4>
+        <p>
+            ISO 5167은 차압식 유량계 (오리피스, 벤츄리, 노즐 등)를 이용해 유량을 계산하는 국제 표준입니다.<br>
+            오리피스 미터를 사용할 경우, 다음 공식을 따릅니다:
+        </p>
 
-<h3>📐 ISO 5167 오리피스 유량 계산</h3>
+        <p style="text-align: center; font-size: 1.2em;">
+            \( \dot{m} = C \, \varepsilon \, A \sqrt{ \frac{2 \Delta P \rho}{1-\beta^4} } \)
+        </p>
 
-<h4>기본 개념</h4>
-<p>
-    ISO 5167은 차압식 유량계 (오리피스, 벤츄리, 노즐 등)를 이용해 유량을 계산하는 국제 표준입니다.<br>
-    오리피스 미터를 사용할 경우, 다음 공식을 따릅니다:
-</p>
+        <ul>
+            <li>\( \dot{m} \) : 질량 유량 (kg/s)</li>
+            <li>\( C \) : 방출 계수 (Discharge Coefficient)</li>
+            <li>\( \varepsilon \) : 팽창 계수 (Expansibility Factor)</li>
+            <li>\( A \) : 오리피스 면적 \((A = \pi d^2/4)\)</li>
+            <li>\( \Delta P \) : 차압 (Pa)</li>
+            <li>\( \rho \) : 유체 밀도 (kg/m³)</li>
+            <li>\( \beta \) : 비율 \((\beta = d/D)\)</li>
+        </ul>
 
-<p style="text-align: center; font-size: 1.2em;">
-    \( \dot{m} = C \, \varepsilon \, A \sqrt{ \frac{2 \Delta P \rho}{1-\beta^4} } \)
-</p>
+        <h4>방출 계수 \(C\) 계산</h4>
+        <p>
+            ISO 5167에서는 다음 경험식을 사용합니다:
+        </p>
 
-<ul>
-    <li>\( \dot{m} \) : 질량 유량 (kg/s)</li>
-    <li>\( C \) : 방출 계수 (Discharge Coefficient)</li>
-    <li>\( \varepsilon \) : 팽창 계수 (Expansibility Factor)</li>
-    <li>\( A \) : 오리피스 면적 \((A = \pi d^2/4)\)</li>
-    <li>\( \Delta P \) : 차압 (Pa)</li>
-    <li>\( \rho \) : 유체 밀도 (kg/m³)</li>
-    <li>\( \beta \) : 비율 \((\beta = d/D)\)</li>
-</ul>
+        <p style="font-size: 0.9em; padding-left: 20px;">
+        \[
+        C = 0.5961 + 0.0261 \beta^2 - 0.216 \beta^8 + 0.000521 \left( \frac{10^6}{Re_D} \right)^{0.7} + (0.0188 + 0.0063 A) \beta^{3.5} \left( \frac{10^6}{Re_D} \right)^{0.3} + (0.043 + 0.08 e^{-10 L_1}) (1 - 0.123 e^{-7 L_2}) (1 - 0.11 e^{-12 L_3})
+        \]
+        </p>
 
-<h4>방출 계수 \(C\) 계산</h4>
-<p>
-    ISO 5167에서는 다음 경험식을 사용합니다:
-</p>
+        <ul>
+            <li>\( A = \left( \frac{19000 \beta}{Re_D} \right)^{0.8} \)</li>
+            <li>\( L_1 = 2.2 \beta \)</li>
+            <li>\( L_2 = L_3 = 0.5 \left( \frac{10^6}{Re_D} \right) \)</li>
+        </ul>
 
-<p style="font-size: 0.9em; padding-left: 20px;">
-\[
-C = 0.5961 + 0.0261 \beta^2 - 0.216 \beta^8 + 0.000521 \left( \frac{10^6}{Re_D} \right)^{0.7} + (0.0188 + 0.0063 A) \beta^{3.5} \left( \frac{10^6}{Re_D} \right)^{0.3} + (0.043 + 0.08 e^{-10 L_1}) (1 - 0.123 e^{-7 L_2}) (1 - 0.11 e^{-12 L_3})
-\]
-</p>
+        <h4>팽창 계수 \( \varepsilon \) 계산</h4>
+        <p>
+            가스나 증기의 경우 압축성 보정을 위해 다음 식을 사용합니다:
+        </p>
 
-<ul>
-    <li>\( A = \left( \frac{19000 \beta}{Re_D} \right)^{0.8} \)</li>
-    <li>\( L_1 = 2.2 \beta \)</li>
-    <li>\( L_2 = L_3 = 0.5 \left( \frac{10^6}{Re_D} \right) \)</li>
-</ul>
+        <p style="text-align: center; font-size: 1.1em;">
+            \( \varepsilon = 1 - (0.41 + 0.35 \beta^4)(1 - \frac{P_2}{P_1}) \)
+        </p>
 
-<h4>팽창 계수 \( \varepsilon \) 계산</h4>
-<p>
-    가스나 증기의 경우 압축성 보정을 위해 다음 식을 사용합니다:
-</p>
+        <ul>
+            <li>\(P_1\) : 업스트림 압력</li>
+            <li>\(P_2\) : 다운스트림 압력</li>
+        </ul>
 
-<p style="text-align: center; font-size: 1.1em;">
-    \( \varepsilon = 1 - (0.41 + 0.35 \beta^4)(1 - \frac{P_2}{P_1}) \)
-</p>
+        <h4>계산 절차 요약</h4>
+        <ol>
+            <li>밀도 \( \rho \), 점도 \( \mu \) 계산</li>
+            <li>초기 오리피스 직경 \(d\) 가정</li>
+            <li>\( \beta \) 계산 (\( \beta = d/D \))</li>
+            <li>Reynolds 수 \(Re_D\) 계산</li>
+            <li>방출 계수 \(C\) 계산</li>
+            <li>예상 유량과 목표 유량 비교</li>
+            <li>Newton-Raphson 반복법으로 \(d\) 보정</li>
+        </ol>
 
-<ul>
-    <li>\(P_1\) : 업스트림 압력</li>
-    <li>\(P_2\) : 다운스트림 압력</li>
-</ul>
-
-<h4>계산 절차 요약</h4>
-<ol>
-    <li>밀도 \( \rho \), 점도 \( \mu \) 계산</li>
-    <li>초기 오리피스 직경 \(d\) 가정</li>
-    <li>\( \beta \) 계산 (\( \beta = d/D \))</li>
-    <li>Reynolds 수 \(Re_D\) 계산</li>
-    <li>방출 계수 \(C\) 계산</li>
-    <li>예상 유량과 목표 유량 비교</li>
-    <li>Newton-Raphson 반복법으로 \(d\) 보정</li>
-</ol>
-
-<p>
-    ➡️ 이렇게 최적 오리피스 직경 \(d\)를 계산하여 정확한 유량 측정을 수행합니다.
-</p>
+        <p>
+            ➡️ 이렇게 최적 오리피스 직경 \(d\)를 계산하여 정확한 유량 측정을 수행합니다.
+        </p>
+    </div>
 {% endblock %}

@@ -1,127 +1,124 @@
 {% extends "base.html" %}
 {% block content %}
-
-<head>
-    
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
 
-<h2>⚙️ Section 3-2: 오리피스 사이징 계산기 (CoolProp 연동)</h2>
+    <div class="main-content">
+        <h2>⚙️ Section 3-2: 오리피스 사이징 계산기 (CoolProp 연동)</h2>
 
-<p>필요한 유량(ṁ)과 차압(ΔP)을 입력하고, 유체 성분/온도/압력 기반 물성으로 오리피스 직경(d)을 계산합니다.</p>
+        <p>필요한 유량(ṁ)과 차압(ΔP)을 입력하고, 유체 성분/온도/압력 기반 물성으로 오리피스 직경(d)을 계산합니다.</p>
 
-<form method="POST" class="form-container">
-    <fieldset>
-        <legend>1. 유체 조건 입력 (CoolProp)</legend>
-        <div id="components-area" class="input-group">
-            {% for i in range(component_count|default(1)) %}
-            <div class="component-row">
-                <label>Component:</label>
-                <select name="component">
-                    {% for comp in components %}
-                        <option value="{{ comp }}"
-                            {% if comp == request.form.getlist('component')[i] %}selected{% endif %}>
-                            {{ comp }}
-                        </option>
+        <form method="POST" class="form-container">
+            <fieldset>
+                <legend>1. 유체 조건 입력 (CoolProp)</legend>
+                <div id="components-area" class="input-group">
+                    {% for i in range(component_count|default(1)) %}
+                    <div class="component-row">
+                        <label>Component:</label>
+                        <select name="component">
+                            {% for comp in components %}
+                                <option value="{{ comp }}"
+                                    {% if comp == request.form.getlist('component')[i] %}selected{% endif %}>
+                                    {{ comp }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                        <label>Mole Fraction:</label>
+                        <input type="number" name="mole_fraction" step="any" min="0" max="1" required
+                               value="{{ request.form.getlist('mole_fraction')[i] if request.form.getlist('mole_fraction') else '' }}">
+
+                        <button type="button" class="remove-btn" onclick="removeComponent(this)">➖</button>
+                    </div>
                     {% endfor %}
-                </select>
+                </div>
+                <button type="button" onclick="addComponent()">➕ 성분 추가</button>
 
+                <div class="input-group">
+                    <label>온도 (°C):</label>
+                    <input type="number" name="T" step="any" required placeholder="예) -10"
+                           value="{{ request.form.get('T', '') }}">
+
+                    <label>압력 (barG):</label>
+                    <input type="number" name="P" step="any" required placeholder="예) 5"
+                           value="{{ request.form.get('P', '') }}">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>2. 유량 및 배관 조건 입력</legend>
+                <div class="input-group">
+                    <label>목표 질량 유량 (kg/h):</label>
+                    <input type="number" name="mass_flow_rate" step="any" required
+                           value="{{ request.form.get('mass_flow_rate', '') }}">
+
+                    <label>차압 (barG):</label>
+                    <input type="number" name="delta_p" step="any" required
+                           value="{{ request.form.get('delta_p', '') }}">
+
+                    <label>배관 내경 D (mm):</label>
+                    <input type="number" name="pipe_diameter" step="any" required
+                           value="{{ request.form.get('pipe_diameter', '') }}">
+                </div>
+
+                <button type="submit" class="submit-btn">📏 오리피스 계산하기</button>
+            </fieldset>
+        </form>
+
+        <hr>
+
+        {% if result %}
+            <h3>📄 계산 결과</h3>
+            {% if result.error %}
+                <p style="color: red;">⚠️ 오류: {{ result.error }}</p>
+            {% else %}
+                <table class="result-table">
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>값</th>
+                            <th>단위</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>오리피스 직경 (d)</td><td>{{ "{:.2f}".format(result.orifice_diameter_mm) }}</td><td>mm</td></tr>
+                        <tr><td>β (d/D)</td><td>{{ "{:.4f}".format(result.beta) }}</td><td>-</td></tr>
+                        <tr><td>디스차지 계수 (C)</td><td>{{ "{:.5f}".format(result.discharge_coefficient) }}</td><td>-</td></tr>
+                        <tr><td>Reynolds 수 (Re_D)</td><td>{{ "{:.2e}".format(result.reynolds_number) }}</td><td>-</td></tr>
+                        <tr><td>밀도 (ρ)</td><td>{{ "{:.2f}".format(result.density) }}</td><td>kg/m³</td></tr>
+                        <tr><td>점도 (μ)</td><td>{{ "{:.4e}".format(result.viscosity) }}</td><td>Pa·s</td></tr>
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endif %}
+
+        <script>
+        const COMPONENTS = {{ components | tojson }};
+
+        function addComponent() {
+            const area = document.getElementById('components-area');
+            const row = document.createElement('div');
+            row.className = 'component-row';
+
+            let options = '';
+            COMPONENTS.forEach(comp => {
+                options += `<option value="${comp}">${comp}</option>`;
+            });
+
+            row.innerHTML = `
+                <label>Component:</label>
+                <select name="component">${options}</select>
                 <label>Mole Fraction:</label>
-                <input type="number" name="mole_fraction" step="any" min="0" max="1" required
-                       value="{{ request.form.getlist('mole_fraction')[i] if request.form.getlist('mole_fraction') else '' }}">
-
+                <input type="number" name="mole_fraction" step="any" min="0" max="1" required>
                 <button type="button" class="remove-btn" onclick="removeComponent(this)">➖</button>
-            </div>
-            {% endfor %}
-        </div>
-        <button type="button" onclick="addComponent()">➕ 성분 추가</button>
+            `;
+            area.appendChild(row);
+        }
 
-        <div class="input-group">
-            <label>온도 (°C):</label>
-            <input type="number" name="T" step="any" required placeholder="예) -10"
-                   value="{{ request.form.get('T', '') }}">
-
-            <label>압력 (barG):</label>
-            <input type="number" name="P" step="any" required placeholder="예) 5"
-                   value="{{ request.form.get('P', '') }}">
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>2. 유량 및 배관 조건 입력</legend>
-        <div class="input-group">
-            <label>목표 질량 유량 (kg/h):</label>
-            <input type="number" name="mass_flow_rate" step="any" required
-                   value="{{ request.form.get('mass_flow_rate', '') }}">
-
-            <label>차압 (barG):</label>
-            <input type="number" name="delta_p" step="any" required
-                   value="{{ request.form.get('delta_p', '') }}">
-
-            <label>배관 내경 D (mm):</label>
-            <input type="number" name="pipe_diameter" step="any" required
-                   value="{{ request.form.get('pipe_diameter', '') }}">
-        </div>
-
-        <button type="submit" class="submit-btn">📏 오리피스 계산하기</button>
-    </fieldset>
-</form>
-
-<hr>
-
-{% if result %}
-    <h3>📄 계산 결과</h3>
-    {% if result.error %}
-        <p style="color: red;">⚠️ 오류: {{ result.error }}</p>
-    {% else %}
-        <table class="result-table">
-            <thead>
-                <tr>
-                    <th>항목</th>
-                    <th>값</th>
-                    <th>단위</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>오리피스 직경 (d)</td><td>{{ "{:.2f}".format(result.orifice_diameter_mm) }}</td><td>mm</td></tr>
-                <tr><td>β (d/D)</td><td>{{ "{:.4f}".format(result.beta) }}</td><td>-</td></tr>
-                <tr><td>디스차지 계수 (C)</td><td>{{ "{:.5f}".format(result.discharge_coefficient) }}</td><td>-</td></tr>
-                <tr><td>Reynolds 수 (Re_D)</td><td>{{ "{:.2e}".format(result.reynolds_number) }}</td><td>-</td></tr>
-                <tr><td>밀도 (ρ)</td><td>{{ "{:.2f}".format(result.density) }}</td><td>kg/m³</td></tr>
-                <tr><td>점도 (μ)</td><td>{{ "{:.4e}".format(result.viscosity) }}</td><td>Pa·s</td></tr>
-            </tbody>
-        </table>
-    {% endif %}
-{% endif %}
-
-<script>
-const COMPONENTS = {{ components | tojson }};
-
-function addComponent() {
-    const area = document.getElementById('components-area');
-    const row = document.createElement('div');
-    row.className = 'component-row';
-
-    let options = '';
-    COMPONENTS.forEach(comp => {
-        options += `<option value="${comp}">${comp}</option>`;
-    });
-
-    row.innerHTML = `
-        <label>Component:</label>
-        <select name="component">${options}</select>
-        <label>Mole Fraction:</label>
-        <input type="number" name="mole_fraction" step="any" min="0" max="1" required>
-        <button type="button" class="remove-btn" onclick="removeComponent(this)">➖</button>
-    `;
-    area.appendChild(row);
-}
-
-function removeComponent(button) {
-    const row = button.parentElement;
-    row.remove();
-}
-</script>
-
+        function removeComponent(button) {
+            const row = button.parentElement;
+            row.remove();
+        }
+        </script>
+    </div>
 {% endblock %}

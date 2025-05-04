@@ -5,24 +5,28 @@
 
 {# comment #} 이 줄 부터 본문 블록, base.html에 정의된 {# block content #}를 이곳에서 덮어씀 (override)  {# endcomment #}
 {% block content %}
+<div class="main-content">
     <h2>⚙️ MECA Tools에 오신 것을 환영합니다!</h2>
     
     <p><!-- 일반 단락 태그 -->
         이 웹사이트는 공정 공학, 열역학, 유체역학 등의 계산을 손쉽게 하기 위한 도구입니다.<br>
         GPSA(Gas Processors Association)의 주요 내용을 학습하고 관련 계산들을 넣어놨습니다.<br>
         특히 가스선 프로세스 관련하여 계산되는 내용을 추가하였습니다.<br><br>
+        그 외의, 각종 조선관련 내용들을 자유롭게 기록하고 있습니다.<br><br>
     </p>
+
     <!-- 순서 없는 리스트 -->
     <ul>
-        <li> Section 0: 물성치 확인 프로그램(CoolProp기반)</li>
-        <li> Section 1: GENERAL INFORMATION</li>
-        <li> Section 2: PROPDUCT SPECIFICATIONS</li>
-        <li> Section 3: MEASUREMENT</li>
-        <li> Section 4: INSTRUMENTS</li>
-    </ul><br>
+        <li>Section 0: 물성치 확인 프로그램(CoolProp기반)</li>
+        <li>Section 1: GENERAL INFORMATION</li>
+        <li>Section 2: PROPDUCT SPECIFICATIONS</li>
+        <li>Section 3: MEASUREMENT</li>
+        <li>Section 4: INSTRUMENTS</li>
+    </ul>
+    <br>
 
     <p style="margin-top: 20px;">
         좌측 메뉴에서 원하는 섹션을 클릭해보세요.
     </p>
-    
+</div>
 {% endblock %}

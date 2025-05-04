@@ -22,12 +22,14 @@
         <nav class="sidebar">
             <ul class="tree-menu">
                 <li><a href="/">홈</a></li>
+                <li><a href="/board">🗂 게시판</a></li>
                 <li><a href="/section/0">Section 0 - 물성치 확인 프로그램(CoolProp기반)</a></li>
                 <li><a href="/section/1">Section 1 - GENERAL INFORMATION</a></li>
                 <li><a href="/section/2">Section 2 - PROPDUCT SPECIFICATIONS</a></li>
                 <li>
-                    <button class="dropdown-btn {% if request.path.startswith('/section/3') %}active{% endif %}">
-                        Section 3 - MEASUREMENT {% if request.path.startswith('/section/3') %}▴{% else %}▾{% endif %}
+                    <button class="dropdown-btn {% if request.path.startswith('/section/3') %}active{% endif %}" 
+                    data-arrow="{% if request.path.startswith('/section/3') %}▴{% else %}▾{% endif %}">
+                    Section 3 - MEASUREMENT
                     </button>
                     <ul class="dropdown-container {% if request.path.startswith('/section/3') %}show{% endif %}">
                         <li><a href="/section/3-1">3-1. 이론</a></li>
